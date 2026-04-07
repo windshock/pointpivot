@@ -28,7 +28,7 @@
 가상자산으로 전환된 범죄 수익은 다음과 같은 공격 인프라 확보에 재투입된다:
 
 - 유출된 계정 목록(Credential) 대량 구매
-- 추적 회피를 위한 주거용 프록시 및 VPS 임대
+- 추적 회피를 위한 주거용 프록시 및 VPS 임대 (국내 공격에 반복 등장하는 VPS 대역 정리: [anonymous-vps](https://github.com/windshock/anonymous-vps/))
 - 선불유심 모집 및 명의도용 기반 통신수단 확보
 - AI 기반 자동화 공격 도구 고도화
 
@@ -65,6 +65,7 @@
 ---
 **참고 자료:**
 - [PointPivot 프로젝트 분석 데이터](https://github.com/windshock/pointpivot)
+- [anonymous-vps: 익명 공격 인프라 VPS 대역 정리](https://github.com/windshock/anonymous-vps/)
 - [해커에게 0원짜리 자동문이 된 캡차 — CAPTCHA 우회 PoC와 방어 전략](https://windshock.github.io/ko/post/2026-03-30-captcha-bypass-poc-defense-strategy/)
 - [[보도상_2025 2분기] '가전 구독' 내구제 대출 사기 실태](https://journal.kbjc.net/news/articleView.html?idxno=20638)
 - [모르는 휴대폰 개통 후 '200만원 할부금' 날벼락](https://www.ilyosisa.co.kr/news/article.html?no=254600)
