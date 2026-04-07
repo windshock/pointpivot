@@ -1,0 +1,7 @@
+# PointPivot Telegram IOC List
+# Generated: 2026-04-07
+# Total: 3 handles
+
+@brrsim_77 (뽀로로통신)  # Cluster#1 | DONE
+@abab1768 (곰돌이통신)  # Cluster#1 | PARTIAL
+@the_usim (라부부통신)  # Cluster#1 | PARTIAL

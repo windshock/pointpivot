@@ -1,0 +1,7 @@
+# PointPivot Domain IOC List
+# Generated: 2026-04-07
+# Total: 3 domains
+
+brrsim77.isweb.co.kr  # 홍보 사이트 | @brrsim_77 | Cluster#1
+abab1768.isweb.co.kr  # 홍보 사이트 | @abab1768 | Cluster#1
+abab1768abab1768.isweb.co.kr  # 홍보 사이트 (변형) | @abab1768 | Cluster#1
