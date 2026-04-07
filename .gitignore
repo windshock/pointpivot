@@ -4,12 +4,9 @@ __pycache__/
 *.pyc
 *.pyo
 
-# 내부 보고서 (공개 불가)
-INTERNAL_REPORT.md
-INTERNAL_REPORT.docx
-INTERNAL_REPORT.pdf
-WHY.docx
-WHY.pdf
+# 편집 불가 바이너리 (브랜드명 포함 가능)
+*.docx
+*.pdf
 
 # 이미지 (브랜드명 포함 가능)
 *.png
