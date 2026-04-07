@@ -64,6 +64,8 @@
 
 중요한 것은 개별 IP를 하나씩 신고하는 것이 아니라, 그 뒤에 있는 운영 모델을 읽어내는 일이다.
 
+특히 VPS 대역은 글로벌 서비스에서도 자주 등장하는 익명 인프라다. 국내 공격에서 반복적으로 나타나는 VPS 공급자·ASN 대역을 정리한 [anonymous-vps](https://github.com/windshock/anonymous-vps/) 레포지토리에서 관련 데이터를 확인할 수 있다.
+
 ## 결론
 
 예전의 계정 탈취가 '훔치는 문제'였다면, 지금의 계정 탈취는 코인을 매개로 스스로를 재생산하는 범죄 운영 구조에 더 가깝다.
@@ -71,6 +73,7 @@
 ## 참고 자료
 
 - [PointPivot 프로젝트](https://github.com/windshock/pointpivot)
+- [anonymous-vps: 익명 공격 인프라 VPS 대역 정리](https://github.com/windshock/anonymous-vps/)
 - [해커에게 0원짜리 자동문이 된 캡차 — CAPTCHA 우회 PoC와 방어 전략](https://windshock.github.io/ko/post/2026-03-30-captcha-bypass-poc-defense-strategy/)
 - [[보도상_2025 2분기] '가전 구독' 내구제 대출 사기 실태](https://journal.kbjc.net/news/articleView.html?idxno=20638)
 - [모르는 휴대폰 개통 후 '200만원 할부금' 날벼락](https://www.ilyosisa.co.kr/news/article.html?no=254600)
