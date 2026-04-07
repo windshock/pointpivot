@@ -1,6 +1,6 @@
 # PointPivot
 
-**국내 서비스 대상 유출 계정 기반 ATO 및 포인트/서비스B 탈취 행위망 추적 프로젝트**
+**국내 서비스 대상 유출 계정 기반 ATO 및 포인트/기프티콘 탈취 행위망 추적 프로젝트**
 
 ---
 
@@ -8,13 +8,13 @@
 
 이 프로젝트는 단순 IP 조회 도구가 아니다.
 
-국내 서비스(서비스A, 서비스B, 서비스C 등)를 대상으로 한 **Credential Stuffing 기반 ATO(Account Takeover)** 및 **포인트/서비스B 탈취 행위**를 추적한다. seed IP에서 시작해 반복 피벗(pivot)으로 행위망을 확장하고 클러스터링하는 **OSINT 기반 fraud infrastructure mapping** 프로젝트다.
+국내 서비스(서비스A, 기프티콘, 서비스C 등)를 대상으로 한 **Credential Stuffing 기반 ATO(Account Takeover)** 및 **포인트/기프티콘 탈취 행위**를 추적한다. seed IP에서 시작해 반복 피벗(pivot)으로 행위망을 확장하고 클러스터링하는 **OSINT 기반 fraud infrastructure mapping** 프로젝트다.
 
 ### 공격 유형 정의
 
 - Credential Stuffing 기반 ATO (Account Takeover)
-- 유출 계정 기반 포인트/서비스B 탈취형 ATO
-- Stored-value fraud (서비스A 포인트, 서비스B, 서비스C)
+- 유출 계정 기반 포인트/기프티콘 탈취형 ATO
+- Stored-value fraud (서비스A 포인트, 기프티콘, 서비스C)
 - Loyalty / reward / gifticon fraud
 
 ### 핵심 인식
@@ -34,7 +34,7 @@ pointpivot/
 ├── STATUS.md                       # 현재 진행 상태 (LLM 인수인계용)
 │
 ├── data/
-│   ├── seed_ips.md                 # 서비스별 seed IP 목록 (서비스A/서비스C/서비스B)
+│   ├── seed_ips.md                 # 서비스별 seed IP 목록 (서비스A/서비스C/기프티콘)
 │   ├── ioc_registry.md             # 수집된 IOC 목록 (텔레그램/닉네임/도메인 등)
 │   ├── campaigns.md                # 식별된 캠페인/클러스터 정의
 │   └── spammed_sites.md            # 스팸 피해 사이트 목록
@@ -53,7 +53,7 @@ pointpivot/
 | 서비스 | 설명 |
 |---|---|
 | **서비스A** | 국내 포인트 서비스 |
-| **서비스B** | 국내 모바일 상품권 서비스 |
+| **기프티콘** | 국내 모바일 상품권 서비스 |
 | **서비스C** | 국내 기업용 모바일 상품권 서비스 |
 
 ---

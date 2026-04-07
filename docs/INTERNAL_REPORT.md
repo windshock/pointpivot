@@ -36,7 +36,7 @@
 
 아래 [Figure 1]은 유출 계정 조달부터 재투자까지 이어지는 순환 고리를 나타낸다.
 
-![Figure 1. Domestic Korean CaaS supply chain infographic](./infographic.png)
+![Figure 1. Domestic Korean CaaS supply chain infographic](./Domestic%20Korean%20CaaS%20supply%20chain%20infographic.png)
 *주: 계정 탈취는 일회성 절도가 아닌 스스로를 재생산하는 운영 구조로 안착됨*
 
 ## 4. 국내 특수성 기반의 취약점 분석

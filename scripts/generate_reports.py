@@ -37,9 +37,9 @@ CONFIDENCE_RANK = {'HIGH': 3, 'MEDIUM': 2, 'LOW': 1, 'UNVERIFIED': 0}
 DETECTION_KEYWORDS = [
     # 사기 서비스 키워드
     '선불유심', '내구제', '유심내구제', '유심매입', '소액대출', '급전', '비상금',
-    '포인트현금화', '서비스B현금화', '상품권매입', '계정구매', '아이디매매',
+    '포인트현금화', '기프티콘현금화', '상품권매입', '계정구매', '아이디매매',
     # 플랫폼 키워드
-    '서비스A', '서비스B', '서비스C',
+    '서비스A', '기프티콘', '서비스C',
 ]
 
 
@@ -211,7 +211,7 @@ def write_summary(blocklist_count: int, tg_count: int):
     done_unique = sum(1 for e in progress_entries if e.status == 'DONE')
     partial_unique = sum(1 for e in progress_entries if e.status == 'PARTIAL')
 
-    svc_label = {'svc_a': '서비스A', 'svc_b': '서비스B', 'svc_c': '서비스C'}
+    svc_label = {'svc_a': '서비스A', 'gifticon': '기프티콘', 'svc_c': '서비스C'}
     svc_rows = []
     for svc, stats in by_service.items():
         t = stats['total']

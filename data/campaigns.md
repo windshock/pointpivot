@@ -13,7 +13,7 @@
 **마지막 업데이트:** 2026-04-07  
 
 ### 개요
-서비스A/서비스B 차단 요청에서 처음 드러난 선불유심내구제/소액대출 스팸 + ATO 네트워크.
+서비스A/기프티콘 차단 요청에서 처음 드러난 선불유심내구제/소액대출 스팸 + ATO 네트워크.
 초기 seed는 대구 SK Broadband `221.143.197.x` 대역이었고, 2026-04-07 izanaholdings 직접 재검증으로
 `kimyoojin18`, `@brrsim_77`, `brrsim77.isweb.co.kr`를 공유하는 KT/SK Broadband 주거용 IP 5개가 추가 확인됐다.
 
@@ -22,7 +22,7 @@
 | IP | ISP | 유형 | 발견 맥락 |
 |---|---|---|---|
 | 221.143.197.136 | SK Broadband (대구) | KR_RESIDENTIAL | 서비스A seed |
-| 221.143.197.135 | SK Broadband (대구) | KR_RESIDENTIAL | 서비스A, 서비스B seed |
+| 221.143.197.135 | SK Broadband (대구) | KR_RESIDENTIAL | 서비스A, 기프티콘 seed |
 | 221.143.197.13 | SK Broadband (대구) | KR_RESIDENTIAL (추정) | 서비스A seed, 직접 게시 미확인 |
 | 220.123.216.40 | Korea Telecom (대전) | KR_RESIDENTIAL | izanaholdings 직접 피벗 |
 | 218.49.179.79 | SK Broadband (서울) | KR_RESIDENTIAL | izanaholdings 직접 피벗 |
@@ -79,9 +79,9 @@ haccpkoreamall.com, hs.ac.kr, bonghwanews.com, dancecode.kr 외 다수
 ### 추정 운영 모델
 
 ```
-[유출 계정 확보] → credential stuffing → 서비스A/서비스B 계정 탈취
+[유출 계정 확보] → credential stuffing → 서비스A/기프티콘 계정 탈취
         ↓
-[탈취 자산 현금화] → 포인트/서비스B → 현금
+[탈취 자산 현금화] → 포인트/기프티콘 → 현금
         ↓
 [선불유심 내구제] → 현금 필요한 사람 대상 스팸 광고
         ↓

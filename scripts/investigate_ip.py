@@ -419,7 +419,7 @@ def main():
     parser.add_argument('ip', nargs='?', help='조사할 IP 주소')
     parser.add_argument('--batch', action='store_true', help='INDEX.md에서 UNVERIFIED IP 배치 조사')
     parser.add_argument('--limit', type=int, default=5, help='배치 최대 처리 수 (기본: 5)')
-    parser.add_argument('--service', choices=['svc_a', 'svc_b', 'svc_c'], help='특정 서비스만 처리')
+    parser.add_argument('--service', choices=['svc_a', 'gifticon', 'svc_c'], help='특정 서비스만 처리')
     parser.add_argument('--dry-run', action='store_true', help='파일 저장 없이 출력만')
     args = parser.parse_args()
 

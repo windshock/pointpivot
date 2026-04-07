@@ -24,7 +24,7 @@ class IPEntry:
     cluster: str         # Cluster#1 | 미분류 | -
     infra: str           # KR_RESIDENTIAL | VPS_GLOBAL | ...
     report_path: str     # 상대 경로 or "-"
-    service: str = ""    # svc_a | svc_b | svc_c
+    service: str = ""    # svc_a | gifticon | svc_c
     confidence: str = "" # HIGH | MEDIUM | LOW | UNVERIFIED (보고서에서 읽음)
 
 
@@ -108,7 +108,7 @@ def parse_index() -> list[IPEntry]:
     entries: list[IPEntry] = []
     service_map = {
         '## 서비스A IP 목록': 'svc_a',
-        '## 서비스B IP 목록': 'svc_b',
+        '## 기프티콘 IP 목록': 'gifticon',
         '## 서비스C IP 목록': 'svc_c',
         '## 피벗으로 추가 확보한 IP': 'pivot',
     }
@@ -155,7 +155,7 @@ def parse_seed_ips() -> list[IPEntry]:
     service_map = {
         '## 서비스A IP 차단요청 내역': 'svc_a',
         '## 서비스C IP 차단 내역': 'svc_c',
-        '## 서비스B 유입 IP': 'svc_b',
+        '## 기프티콘 유입 IP': 'gifticon',
     }
 
     for section_header, service in service_map.items():

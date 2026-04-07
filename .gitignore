@@ -4,12 +4,5 @@ __pycache__/
 *.pyc
 *.pyo
 
-# 편집 불가 바이너리 (브랜드명 포함 가능)
-*.docx
-*.pdf
-
-# 이미지 (브랜드명 포함 가능)
-*.png
-
 # OS
 .DS_Store
