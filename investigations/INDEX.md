@@ -62,36 +62,36 @@
 
 | IP | 상태 | 클러스터 | 인프라 | last_seen | last_verified | 조사 파일 |
 | --- | --- | --- | --- | --- | --- | --- |
-| 141.164.36.87 | PARTIAL | - | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/141.164.36.87.md) |
-| 141.164.37.225 | PARTIAL | - | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/141.164.37.225.md) |
-| 141.164.39.46 | PARTIAL | - | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/141.164.39.46.md) |
-| 141.164.40.188 | PARTIAL | - | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/141.164.40.188.md) |
-| 141.164.48.3 | PARTIAL | - | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/141.164.48.3.md) |
-| 141.164.49.178 | PARTIAL | - | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/141.164.49.178.md) |
-| 141.164.49.218 | PARTIAL | - | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/141.164.49.218.md) |
-| 141.164.52.110 | PARTIAL | - | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/141.164.52.110.md) |
-| 141.164.52.34 | PARTIAL | - | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/141.164.52.34.md) |
-| 141.164.53.101 | PARTIAL | - | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/141.164.53.101.md) |
-| 141.164.56.216 | PARTIAL | - | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/141.164.56.216.md) |
-| 141.164.60.85 | PARTIAL | - | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/141.164.60.85.md) |
-| 141.164.61.113 | PARTIAL | - | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/141.164.61.113.md) |
-| 158.247.194.42 | PARTIAL | - | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/158.247.194.42.md) |
-| 158.247.195.36 | PARTIAL | - | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/158.247.195.36.md) |
-| 158.247.198.28 | PARTIAL | - | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/158.247.198.28.md) |
-| 158.247.200.9 | PARTIAL | - | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/158.247.200.9.md) |
-| 158.247.202.252 | PARTIAL | - | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/158.247.202.252.md) |
-| 158.247.210.130 | PARTIAL | - | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/158.247.210.130.md) |
-| 158.247.220.75 | PARTIAL | - | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/158.247.220.75.md) |
-| 158.247.224.35 | PARTIAL | - | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/158.247.224.35.md) |
-| 158.247.225.151 | PARTIAL | - | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/158.247.225.151.md) |
-| 158.247.225.193 | PARTIAL | - | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/158.247.225.193.md) |
-| 158.247.233.19 | PARTIAL | - | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/158.247.233.19.md) |
-| 158.247.233.59 | PARTIAL | - | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/158.247.233.59.md) |
-| 158.247.236.138 | PARTIAL | - | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/158.247.236.138.md) |
-| 158.247.238.216 | PARTIAL | - | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/158.247.238.216.md) |
-| 158.247.239.223 | PARTIAL | - | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/158.247.239.223.md) |
-| 64.176.224.115 | PARTIAL | - | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/64.176.224.115.md) |
-| 64.176.228.120 | PARTIAL | - | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/64.176.228.120.md) |
+| 141.164.36.87 | PARTIAL | Cluster#2 후보 | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/141.164.36.87.md) |
+| 141.164.37.225 | PARTIAL | Cluster#2 후보 | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/141.164.37.225.md) |
+| 141.164.39.46 | PARTIAL | Cluster#2 후보 | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/141.164.39.46.md) |
+| 141.164.40.188 | PARTIAL | Cluster#2 후보 | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/141.164.40.188.md) |
+| 141.164.48.3 | PARTIAL | Cluster#2 후보 | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/141.164.48.3.md) |
+| 141.164.49.178 | PARTIAL | Cluster#2 후보 | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/141.164.49.178.md) |
+| 141.164.49.218 | PARTIAL | Cluster#2 후보 | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/141.164.49.218.md) |
+| 141.164.52.110 | PARTIAL | Cluster#2 후보 | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/141.164.52.110.md) |
+| 141.164.52.34 | PARTIAL | Cluster#2 후보 | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/141.164.52.34.md) |
+| 141.164.53.101 | PARTIAL | Cluster#2 후보 | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/141.164.53.101.md) |
+| 141.164.56.216 | PARTIAL | Cluster#2 후보 | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/141.164.56.216.md) |
+| 141.164.60.85 | PARTIAL | Cluster#2 후보 | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/141.164.60.85.md) |
+| 141.164.61.113 | PARTIAL | Cluster#2 후보 | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/141.164.61.113.md) |
+| 158.247.194.42 | PARTIAL | Cluster#2 후보 | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/158.247.194.42.md) |
+| 158.247.195.36 | PARTIAL | Cluster#2 후보 | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/158.247.195.36.md) |
+| 158.247.198.28 | PARTIAL | Cluster#2 후보 | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/158.247.198.28.md) |
+| 158.247.200.9 | PARTIAL | Cluster#2 후보 | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/158.247.200.9.md) |
+| 158.247.202.252 | PARTIAL | Cluster#2 후보 | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/158.247.202.252.md) |
+| 158.247.210.130 | PARTIAL | Cluster#2 후보 | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/158.247.210.130.md) |
+| 158.247.220.75 | PARTIAL | Cluster#2 후보 | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/158.247.220.75.md) |
+| 158.247.224.35 | PARTIAL | Cluster#2 후보 | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/158.247.224.35.md) |
+| 158.247.225.151 | PARTIAL | Cluster#2 후보 | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/158.247.225.151.md) |
+| 158.247.225.193 | PARTIAL | Cluster#2 후보 | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/158.247.225.193.md) |
+| 158.247.233.19 | PARTIAL | Cluster#2 후보 | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/158.247.233.19.md) |
+| 158.247.233.59 | PARTIAL | Cluster#2 후보 | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/158.247.233.59.md) |
+| 158.247.236.138 | PARTIAL | Cluster#2 후보 | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/158.247.236.138.md) |
+| 158.247.238.216 | PARTIAL | Cluster#2 후보 | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/158.247.238.216.md) |
+| 158.247.239.223 | PARTIAL | Cluster#2 후보 | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/158.247.239.223.md) |
+| 64.176.224.115 | PARTIAL | Cluster#2 후보 | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/64.176.224.115.md) |
+| 64.176.228.120 | PARTIAL | Cluster#2 후보 | VPS_GLOBAL (Vultr) | - | - | [보고서](unclassified/64.176.228.120.md) |
 | 211.255.155.246 | PARTIAL | - | 미확인 | - | - | [보고서](unclassified/211.255.155.246.md) |
 
 

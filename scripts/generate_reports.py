@@ -292,7 +292,7 @@ def write_summary(blocklist_count: int, tg_count: int):
 | 클러스터 | 상태 | IP 수 | 핵심 IOC |
 |---|---|---|---|
 | Cluster#1 | 활성 | {sum(1 for e in unique_entries if 'Cluster#1' in e.cluster)} | @brrsim_77, @abab1768, @the_usim |
-| Cluster#2 | 미분석 | {sum(1 for e in unique_entries if 'Cluster#2' in e.cluster)} | (Vultr VPS 대역) |
+| Cluster#2 | 부분 확인 | {sum(1 for e in unique_entries if 'Cluster#2' in e.cluster)} | @YY77882 (불법 의약품 자동화 인프라, Vultr VPS) |
 | 미분류 | - | {sum(1 for e in unique_entries if e.cluster in ('-', '미분류'))} | - |
 
 ---
