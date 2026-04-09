@@ -4,14 +4,28 @@
 
 ---
 
-## 조사 진행률
+## 조사 커버리지 (seed IP 기준)
 
-| 서비스 | 전체 | DONE | PARTIAL | UNVERIFIED | 진행률 |
+| 서비스 | 전체 | DONE | PARTIAL | UNVERIFIED | 1차 스캔 커버리지 |
 |---|---|---|---|---|---|
 | 서비스A | 8 | 2 | 6 | 0 | 100% |
 | 기프티콘 | 25 | 1 | 24 | 0 | 100% |
 | 서비스C | 31 | 0 | 31 | 0 | 100% |
 | **합계** | **64** | **3** | **61** | **0** | **100%** |
+
+> **1차 스캔 커버리지** = DONE + PARTIAL (DDG 검색·초안 보고서까지 완료된 비율).  
+> **확정률 (DONE)** = 3/64 (5%) — 직접 게시 증거 또는 복수 출처로 확인 완료.
+
+---
+
+## 추적 IP 및 클러스터 배분
+
+| 클러스터 | 상태 | IP 수 | 핵심 IOC |
+|---|---|---|---|
+| Cluster#1 | 🔴 활성 | 9 | @brrsim_77, @abab1768, @the_usim (내구제/유심 스팸) |
+| Cluster#2 | 🟡 부분 확인 | 30 | @YY77882 (불법 의약품 자동화, Vultr VPS) |
+| 미분류 | 추가 조사 필요 | 30 | 기프티콘 KR_RESIDENTIAL 등 — DDG에서 IOC 미발견 |
+| **전체** | | **69** | seed 64 + 피벗 5 |
 
 ---
 
@@ -25,28 +39,15 @@
 
 ---
 
-## 블록리스트 현황
+## 방어 산출물
 
-| 산출물 | 항목 수 | 최소 신뢰도 |
+| 산출물 | 항목 수 | 기준 |
 |---|---|---|
-| blocklist_ip.txt | 7 | MEDIUM |
-| ioc_telegram.txt | 5 | PARTIAL 이상 |
+| blocklist_ip.txt | 7 | 신뢰도 MEDIUM 이상, DONE 상태, TTL 이내 |
+| ioc_telegram.txt | 5 | 피벗 상태 PARTIAL 이상 |
 
 ---
 
-## 식별된 클러스터
+## 다음 우선 작업
 
-| 클러스터 | 상태 | IP 수 | 핵심 IOC |
-|---|---|---|---|
-| Cluster#1 | 활성 | 9 | @brrsim_77, @abab1768, @the_usim |
-| Cluster#2 | 부분 확인 | 30 | @YY77882 (불법 의약품 자동화 인프라, Vultr VPS) |
-| 미분류 | - | 30 | - |
-
----
-
-## 다음 우선 작업 (STATUS.md 참조)
-
-1. `python scripts/investigate_ip.py --batch --service svc_a --limit 5`
-2. `python scripts/investigate_ip.py --batch --service svc_c --limit 5`
-3. `python scripts/investigate_ip.py --batch --service gifticon --limit 10`
-4. `python scripts/generate_reports.py` (재실행하면 자동 업데이트)
+→ [`STATUS.md`](../STATUS.md) 참조

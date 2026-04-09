@@ -254,17 +254,36 @@ def write_summary(blocklist_count: int, tg_count: int):
     progress_unverified = progress_total - progress_done - progress_partial
     progress_pct = round((progress_done + progress_partial) / progress_total * 100) if progress_total else 0
 
+    n_cluster1 = sum(1 for e in unique_entries if 'Cluster#1' in e.cluster)
+    n_cluster2 = sum(1 for e in unique_entries if 'Cluster#2' in e.cluster)
+    n_unclassified = sum(1 for e in unique_entries if e.cluster.strip() in ('-', '미분류', ''))
+    total_tracked = len(unique_entries)
+
     content = f"""# PointPivot 현황 요약 (Summary)
 
 > 자동 생성: {TODAY}
 
 ---
 
-## 조사 진행률
+## 조사 커버리지 (seed IP 기준)
 
-| 서비스 | 전체 | DONE | PARTIAL | UNVERIFIED | 진행률 |
+| 서비스 | 전체 | DONE | PARTIAL | UNVERIFIED | 1차 스캔 커버리지 |
 |---|---|---|---|---|---|
 {''.join(row + chr(10) for row in svc_rows)}| **합계** | **{progress_total}** | **{progress_done}** | **{progress_partial}** | **{progress_unverified}** | **{progress_pct}%** |
+
+> **1차 스캔 커버리지** = DONE + PARTIAL (DDG 검색·초안 보고서까지 완료된 비율).  
+> **확정률 (DONE)** = {progress_done}/{progress_total} ({round(progress_done/progress_total*100) if progress_total else 0}%) — 직접 게시 증거 또는 복수 출처로 확인 완료.
+
+---
+
+## 추적 IP 및 클러스터 배분
+
+| 클러스터 | 상태 | IP 수 | 핵심 IOC |
+|---|---|---|---|
+| Cluster#1 | 🔴 활성 | {n_cluster1} | @brrsim_77, @abab1768, @the_usim (내구제/유심 스팸) |
+| Cluster#2 | 🟡 부분 확인 | {n_cluster2} | @YY77882 (불법 의약품 자동화, Vultr VPS) |
+| 미분류 | 추가 조사 필요 | {n_unclassified} | 기프티콘 KR_RESIDENTIAL 등 — DDG에서 IOC 미발견 |
+| **전체** | | **{total_tracked}** | seed {progress_total} + 피벗 {total_tracked - progress_total} |
 
 ---
 
@@ -278,31 +297,18 @@ def write_summary(blocklist_count: int, tg_count: int):
 
 ---
 
-## 블록리스트 현황
+## 방어 산출물
 
-| 산출물 | 항목 수 | 최소 신뢰도 |
+| 산출물 | 항목 수 | 기준 |
 |---|---|---|
-| blocklist_ip.txt | {blocklist_count} | MEDIUM |
-| ioc_telegram.txt | {tg_count} | PARTIAL 이상 |
+| blocklist_ip.txt | {blocklist_count} | 신뢰도 MEDIUM 이상, DONE 상태, TTL 이내 |
+| ioc_telegram.txt | {tg_count} | 피벗 상태 PARTIAL 이상 |
 
 ---
 
-## 식별된 클러스터
+## 다음 우선 작업
 
-| 클러스터 | 상태 | IP 수 | 핵심 IOC |
-|---|---|---|---|
-| Cluster#1 | 활성 | {sum(1 for e in unique_entries if 'Cluster#1' in e.cluster)} | @brrsim_77, @abab1768, @the_usim |
-| Cluster#2 | 부분 확인 | {sum(1 for e in unique_entries if 'Cluster#2' in e.cluster)} | @YY77882 (불법 의약품 자동화 인프라, Vultr VPS) |
-| 미분류 | - | {sum(1 for e in unique_entries if e.cluster in ('-', '미분류'))} | - |
-
----
-
-## 다음 우선 작업 (STATUS.md 참조)
-
-1. `python scripts/investigate_ip.py --batch --service svc_a --limit 5`
-2. `python scripts/investigate_ip.py --batch --service svc_c --limit 5`
-3. `python scripts/investigate_ip.py --batch --service gifticon --limit 10`
-4. `python scripts/generate_reports.py` (재실행하면 자동 업데이트)
+→ [`STATUS.md`](../STATUS.md) 참조
 """
     path.write_text(content, encoding='utf-8')
     print(f'  summary.md 생성 완료')
