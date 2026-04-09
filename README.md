@@ -2,31 +2,71 @@
 
 **국내 서비스 대상 유출 계정 기반 ATO 및 포인트/기프티콘 탈취 행위망 추적 프로젝트**
 
+> **YouTube 해설:** [내 기프티콘이 사이버 무기로 쓰이는 이유](https://youtu.be/EyRPDV0QFZs)
+
 ---
 
-## 프로젝트 개요
+## 발견된 행위망 (2026-04-09 기준)
 
-이 프로젝트는 단순 IP 조회 도구가 아니다.
+> 상세: **[`data/campaigns.md`](data/campaigns.md)** | 최신 집계: **[`reports/summary.md`](reports/summary.md)** | IP 전체: **[`investigations/INDEX.md`](investigations/INDEX.md)**
 
-국내 서비스(서비스A, 기프티콘, 서비스C 등)를 대상으로 한 **Credential Stuffing 기반 ATO(Account Takeover)** 및 **포인트/기프티콘 탈취 행위**를 추적한다. seed IP에서 시작해 반복 피벗(pivot)으로 행위망을 확장하고 클러스터링하는 **OSINT 기반 fraud infrastructure mapping** 프로젝트다.
+### Cluster #1 — 뽀로로/곰돌이/라부부 통신 네트워크 🔴 활성
 
-### 해설 영상 (맥락 이해용)
+국내 포인트·기프티콘 서비스를 노린 **Credential Stuffing + 선불유심내구제 스팸** 행위망.
 
-- **YouTube:** [내 기프티콘이 사이버 무기로 쓰이는 이유](https://youtu.be/EyRPDV0QFZs) — 포인트·기프티콘·범죄 수익 구조에 대한 해설
-- **로컬 원본 (저장소 `docs/`):** `내_기프티콘이_사이버_무기로_쓰이는_이유.mp4`, 자막 `.srt`, 오디오 `.m4a`
+| 항목 | 내용 |
+|------|------|
+| IP 대역 | `221.143.197.x` (대구, SK Broadband 고정회선) + 피벗 5개 |
+| 텔레그램 | `@brrsim_77` (뽀로로통신), `@abab1768` (곰돌이통신), `@the_usim` (라부부통신) |
+| 공통 닉네임 | `kimyoojin18` |
+| 확인 IP 수 | 8개 (DONE 2, PARTIAL 6) |
+| 활동 기간 | 2025-12 ~ 현재 활성 |
+| AbuseIPDB | **미등록** — 글로벌 탐지 불가, 국내 게시판 스팸 패턴 |
+| 피해 사이트 | izanaholdings.com, matcl.com 외 20개 이상 |
 
-### 공격 유형 정의
+→ 보고서: [`investigations/cluster1/`](investigations/cluster1/)
 
-- Credential Stuffing 기반 ATO (Account Takeover)
-- 유출 계정 기반 포인트/기프티콘 탈취형 ATO
-- Stored-value fraud (서비스A 포인트, 기프티콘, 서비스C)
-- Loyalty / reward / gifticon fraud
+### Cluster #2 — 불법 의약품·독극물 판매 자동화 인프라 (@YY77882) 🟡 부분 확인
 
-### 핵심 인식
+서비스C 차단 요청 IP가 **Vultr VPS** 기반 자동화 스팸봇으로 확인. Cluster#1과 **완전히 다른 행위자**.
 
-> "AbuseIPDB에 안 나온다 = 깨끗하다"로 보면 안 된다.
+| 항목 | 내용 |
+|------|------|
+| IP 대역 | `141.164.x.x`, `158.247.x.x`, `64.176.x.x` (Vultr AS20473) — 29개 |
+| 텔레그램 | `@YY77882` (불법 의약품·독극물 판매 채널) |
+| 스팸 내용 | 졸피뎀, 물뽕, 펜토바르비탈(안락사), 시안화칼륨(독극물) 등 |
+| 스팸 사이트 | hanyaksale.com, tokiya.com 등 한국 커뮤니티 (작성자 IP 노출 확인) |
+| 조사 상태 | PARTIAL — @YY77882 채널 내용·규모 추가 확인 필요 |
 
-글로벌 평판 서비스(AbuseIPDB, Spamhaus 등)는 국내 게시판 스팸, 내구제, 유심, 포인트 탈취 같은 **로컬형 행위를 포착하지 못한다.** 국내 웹 검색 + 피벗 확장 + 행위망 클러스터링이 핵심 방법론이다.
+→ 상세: [`data/campaigns.md#cluster-2`](data/campaigns.md)
+
+### 미분류 기프티콘 IP (한국 거주형)
+
+기프티콘 서비스 공격 IP 25개. 전부 KR_RESIDENTIAL (SK/KT/LG/abcle/HyosungITX). DDG 결과 IOC 없음 → Credential Stuffing 자동화 추정.
+
+---
+
+## 현재 조사 현황
+
+| 항목 | 값 |
+|------|-----|
+| 전체 seed IP | 64개 |
+| 1차 조사 완료 | 64개 (100%) |
+| DONE | 3개 |
+| PARTIAL | 61개 |
+| 블록리스트 IP | 7개 (`reports/blocklist_ip.txt`) |
+| 확인된 텔레그램 | 18개 (`data/ioc_registry.md`) |
+
+→ 최신 자동 집계: [`reports/summary.md`](reports/summary.md)  
+→ 전체 IP 인덱스: [`investigations/INDEX.md`](investigations/INDEX.md)
+
+---
+
+## 왜 이게 중요한가
+
+> "AbuseIPDB에 안 나온다 = 깨끗하다"는 틀렸다.
+
+글로벌 평판 서비스(AbuseIPDB, Spamhaus 등)는 국내 게시판 스팸·내구제·유심 탈취 같은 **로컬형 행위를 포착하지 못한다.** 이 프로젝트는 국내 웹 검색 + 피벗 확장 + 행위망 클러스터링으로 글로벌 서비스가 놓치는 한국 특화 fraud IP를 추적한다.
 
 ---
 
@@ -91,40 +131,32 @@ pointpivot/
 
 ---
 
-## 핵심 발견사항 요약 (2026-04-06 기준)
-
-### Cluster #1 — 뽀로로/곰돌이/라부부 통신 네트워크 (대구, SK Broadband)
-
-| 항목 | 값 |
-|---|---|
-| IP 대역 | 221.143.197.x (대구, SK Broadband 고정회선) |
-| 확인된 IP | 221.143.197.135, 221.143.197.136, 221.143.197.13 |
-| 텔레그램 | @brrsim_77, @abab1768, @the_usim |
-| 브랜드명 | 뽀로로통신, 곰돌이통신, 라부부통신 |
-| 공통 닉네임 | kimyoojin18 |
-| 활동 기간 | 2025-12 ~ 2026-04 (현재 활성) |
-| 주요 활동 | 선불유심내구제, 소액대출, 게시판 스팸 |
-| AbuseIPDB | 미등록 (신고 이력 없음) — 글로벌 탐지 불가 |
-
-→ `investigations/cluster1/221.143.197.136.md` 참조
-
----
-
 ## 관련 프로젝트
 
 - **[anonymous-vps](https://github.com/windshock/anonymous-vps)** — 익명·크립토 친화 VPS/호스팅 인벤토리, 사건 IOC(`/32`), 보수적 CIDR 승격, 탐지용 쿼리 생성. PointPivot은 **국내 행위망·캠페인** 중심이고, 서비스C(Vultr 등) seed는 anonymous-vps 산출물과 **풍부화·승격** 관점에서 맞닿는다. 상세: [RELATIONSHIPS.md](RELATIONSHIPS.md).
 
 ---
 
-## 다음 에이전트를 위한 빠른 시작
+## 이 레포를 처음 보는 사람을 위한 읽기 경로
 
-1. `STATUS.md` 먼저 읽어라 — 현재 어디까지 했고 다음에 뭘 해야 하는지 명시됨
-2. `OPS.md` — 운영 주기·TTL·자동화 경계
-3. `METHODOLOGY.md` 읽어라 — 피벗 루프(자동/수동), 분류 체계
-4. `data/ioc_registry.md`에서 미조사 IOC 확인
-5. IP 조사: `python scripts/investigate_ip.py <IP>` (원스톱·CSV·티어2 후보까지: `python scripts/run_investigate_pipeline.py <IP>`) — IOC 역피벗: `python scripts/investigate_ioc.py "@핸들"`
+| 목적 | 읽을 파일 |
+|------|-----------|
+| **"뭘 발견했냐" 요약** | [`data/campaigns.md`](data/campaigns.md) |
+| **현재 숫자/통계** | [`reports/summary.md`](reports/summary.md) (자동 생성) |
+| **IP 전체 목록·상태** | [`investigations/INDEX.md`](investigations/INDEX.md) |
+| **특정 IP 상세** | `investigations/cluster1/<IP>.md` 또는 `investigations/unclassified/<IP>.md` |
+| **텔레그램·도메인 IOC** | [`data/ioc_registry.md`](data/ioc_registry.md) |
+| **차단 목록 바로 쓰기** | [`reports/blocklist_ip.txt`](reports/blocklist_ip.txt) |
+
+## 에이전트·기여자를 위한 빠른 시작
+
+1. [`STATUS.md`](STATUS.md) 먼저 — 지금 어디까지, 다음 뭐 해야 하는지
+2. [`OPS.md`](OPS.md) — 운영 주기·TTL·자동화 경계
+3. [`METHODOLOGY.md`](METHODOLOGY.md) — 피벗 루프(자동/수동), 티어1/2 분류
+4. [`data/ioc_registry.md`](data/ioc_registry.md) — 미조사 IOC 확인
+5. IP 조사: `python scripts/investigate_ip.py <IP>` (원스톱: `python scripts/run_investigate_pipeline.py <IP>`)
 6. 브라우저로 Google 검색·본문 확인 → `investigations/` 저장 → `data/ioc_registry.md` 업데이트
-7. `python scripts/generate_reports.py` — `python scripts/stale_check.py` (월간 권장)
+7. `python scripts/generate_reports.py` (리포트 재생성) | `python scripts/stale_check.py` (월간)
 
 ---
 
