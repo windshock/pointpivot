@@ -64,6 +64,7 @@
 
 ---
 **참고 자료:**
+- **해설 영상 (YouTube):** [내 기프티콘이 사이버 무기로 쓰이는 이유](https://youtu.be/EyRPDV0QFZs) — 동일 주제 로컬 파일: `docs/내_기프티콘이_사이버_무기로_쓰이는_이유.mp4`, 자막 `내_기프티콘이_사이버_무기로_쓰이는_이유.srt`
 - [PointPivot 프로젝트 분석 데이터](https://github.com/windshock/pointpivot)
 - [anonymous-vps: 익명 공격 인프라 VPS 대역 정리](https://github.com/windshock/anonymous-vps/)
 - [해커에게 0원짜리 자동문이 된 캡차 — CAPTCHA 우회 PoC와 방어 전략](https://windshock.github.io/ko/post/2026-03-30-captcha-bypass-poc-defense-strategy/)

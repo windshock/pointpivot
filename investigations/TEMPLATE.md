@@ -9,6 +9,15 @@
 **클러스터:** Cluster#N | 미분류  
 **신뢰도:** HIGH | MEDIUM | LOW | UNVERIFIED  
 
+**first_seen:** YYYY-MM-DD  
+**last_seen:** YYYY-MM-DD  
+**last_verified:** YYYY-MM-DD  
+**ttl_days:** 90  
+**lifecycle_state:** ACTIVE | STALE | RETIRED | UNVERIFIED  
+
+> `ttl_days` 기본: KR_RESIDENTIAL 90, VPS_GLOBAL 30, KR_MOBILE 60.  
+> `STALE`/`RETIRED` 는 `generate_reports.py` 블록리스트에서 제외. [OPS.md](../OPS.md) 참고.
+
 ---
 
 ## ⭐ IP 기본 정보

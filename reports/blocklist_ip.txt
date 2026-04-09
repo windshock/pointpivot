@@ -1,14 +1,14 @@
 # PointPivot IP Blocklist
-# Generated: 2026-04-07
+# Generated: 2026-04-09
 # Min confidence: MEDIUM
 # Total: 7 IPs
 # Format: IP  # Cluster | Confidence | Services
 
 # --- Cluster#1 — 뽀로로/곰돌이/라부부 통신 네트워크 ---
-125.132.9.136  # Cluster#1 — 뽀로로/곰돌이/라부부 통신 네트워크 | HIGH | pivot
-125.132.9.140  # Cluster#1 — 뽀로로/곰돌이/라부부 통신 네트워크 | HIGH | pivot
-14.51.2.179  # Cluster#1 — 뽀로로/곰돌이/라부부 통신 네트워크 | HIGH | pivot
-218.49.179.79  # Cluster#1 — 뽀로로/곰돌이/라부부 통신 네트워크 | HIGH | pivot
-220.123.216.40  # Cluster#1 — 뽀로로/곰돌이/라부부 통신 네트워크 | HIGH | pivot
-221.143.197.135  # Cluster#1 — 뽀로로/곰돌이/라부부 통신 네트워크 | HIGH | svc_a,svc_b
-221.143.197.136  # Cluster#1 — 뽀로로/곰돌이/라부부 통신 네트워크 | HIGH | svc_a
+125.132.9.136  # Cluster#1 — 뽀로로/곰돌이/라부부 통신 네트워크 | HIGH | pivot | expires 2026-07-06
+125.132.9.140  # Cluster#1 — 뽀로로/곰돌이/라부부 통신 네트워크 | HIGH | pivot | expires 2026-07-06
+14.51.2.179  # Cluster#1 — 뽀로로/곰돌이/라부부 통신 네트워크 | HIGH | pivot | expires 2026-07-06
+218.49.179.79  # Cluster#1 — 뽀로로/곰돌이/라부부 통신 네트워크 | HIGH | pivot | expires 2026-07-06
+220.123.216.40  # Cluster#1 — 뽀로로/곰돌이/라부부 통신 네트워크 | HIGH | pivot | expires 2026-07-06
+221.143.197.135  # Cluster#1 — 뽀로로/곰돌이/라부부 통신 네트워크 | HIGH | svc_a,gifticon | expires 2026-06-12
+221.143.197.136  # Cluster#1 — 뽀로로/곰돌이/라부부 통신 네트워크 | HIGH | svc_a | expires 2026-06-12

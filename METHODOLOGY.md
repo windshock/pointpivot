@@ -18,39 +18,97 @@ AbuseIPDB, Spamhaus, VirusTotal 등 글로벌 서비스는 **참고 자료**일 
 
 ---
 
-## 2. 피벗 반복 절차 (Pivot Loop)
+## 2. 피벗 반복 절차 (Pivot Loop) — Seed → 캠페인 발견
+
+### 2.1 한눈에 보기
+
+- **목표:** seed IP에서 출발해 **IOC**를 모으고, 역피벗으로 **새 IP**를 찾아 **캠페인(클러스터)** 으로 묶는다.
+- **종료 조건(권장):** 연속 **N라운드**(예: 2~3) 동안 **신규 IP/IOC가 0건**이거나, `STATUS.md` 큐가 비었을 때.
+
+### 2.2 단계별 [자동] / [수동]
+
+| 단계 | 내용 | 자동/수동 |
+|------|------|-----------|
+| 1 | Seed IP 후보 확정 (`data/seed_ips.md`, `data/pivot_queue.md`) | [수동] 인입 시 기록 |
+| 2 | DDG `"{IP}"` 검색 + **`spammed_sites.md`의 모든 `ddg_site` 도메인**에 대해 `site:도메인 "{IP}"` (티어 1·얕음) | [자동] `investigate_ip.py` |
+| 3 | izanaholdings: DDG exact 검색 + (옵션) 목록 순회·`read.htm` (티어 3·깊음) | [자동] `izanaholdings.py`, 깊이는 `METHODOLOGY` §2.4·CLI 플래그로 조절 |
+| 4 | Google/Naver·브라우저로 게시글 **본문** 확인, Cloudflare 뒤 페이지 | [수동] 브라우저/skill |
+| 5 | IOC 추출 → `data/ioc_registry.md` | [자동] 일부 등록 가능 / [수동] 검증·정리 |
+| 6 | IOC 역피벗 → 새 IP → `pivot_queue.md` | [자동] `investigate_ioc.py` + [수동] 오탐 제거 |
+| 7 | 클러스터 귀속·서술 → `data/campaigns.md`, `investigations/INDEX.md` | [수동] |
+| 8 | 방어 산출물 → `reports/*` | [자동] `generate_reports.py` |
+
+### 2.3 데이터 환류 경로
+
+```
+seed_ips.md / pivot_queue.md
+        → investigate_ip.py (DDG + 다중 사이트 스크래퍼)
+        → investigations/{cluster1,unclassified}/*.md
+        → investigate_ioc.py → pivot_queue.md (신규 IP)
+        → ioc_registry.md / campaigns.md / INDEX.md
+        → generate_reports.py → reports/blocklist_ip.txt
+```
+
+### 2.4 피해 사이트 스크래핑: 전부 얕게, 깊게는 신호(데이터)로
+
+**원칙:** `data/spammed_sites.md`에 적힌 피해 사이트는 **가능한 한 모두** 자동 조사 루프에 넣되, 처음부터 전 사이트에 **이자나 수준의 목록·본문 파싱**을 적용하지는 않는다. 깊이는 **1차로 모인 지표**를 보고 단계적으로 올린다.
+
+#### 티어 정의 (권장)
+
+| 티어 | 대상 | 자동화 수단 | 산출(데이터) |
+|------|------|-------------|----------------|
+| **1 · 얕음** | 표에 등록된 **모든** `ddg_site` 도메인 (+ 필요 시 이자나에 대해서도 동일한 DDG `site:`) | `site:도메인 "{IP}"` DDG 검색 | 도메인별 **검색 건수**, 스니펫 내 **사기 키워드** 여부, URL 후보 |
+| **2 · 중간** | 티어 1에서 **검색결과>0** 이거나 스니펫에 `FRAUD_KEYWORDS`가 잡힌 도메인 | 브라우저로 상위 URL 열람, 또는 향후 “첫 결과 URL만 GET” 같은 **경량 페치** (사이트별 모듈 추가 시) | 본문·메타에 IOC/닉네임/연락처, (노출 시) 작성자 정보 |
+| **3 · 깊음** | (a) 티어 2에서 악성 스팸 확정, (b) **작성자 IP가 HTML에 구조적으로 박힌** 사이트로 문서화된 경우 | 전용 스크래퍼: 목록 페이지 순회 + 글 단위 `read` URL (현재 구현 예: `izanaholdings.py`) | 작성자 IP·동일 행위자 피벗용 IOC |
+
+**심화(티어 2→3) 트리거 예시 — 표로 쌓인 뒤 사람이 판단해도 되고, 나중에 규칙으로 자동화해도 된다.**
+
+- 같은 IP에 대해 **서로 다른 피해 도메인에서 티어 1 히트가 2개 이상**이다.
+- 티어 1 스니펫에 **선불유심·내구제·급전** 등이 같이 보인다.
+- `STATUS.md` / 수동 큐에서 해당 IP·도메인 쌍을 **우선 조사**로 표시했다.
+- 해당 사이트 행에 **전용 스크래퍼 유형**이 추가됐다 (`spammed_sites.md` 스크래퍼 컬럼).
+
+**역설계 금지:** “이자나만 깊게 했으니 다른 곳은 없다”가 아니라, **티어 1이 전 도메인을 돌았는지**를 먼저 본다. 깊은 결론(DONE/직접 게시)은 티어 3까지 갔을 때만 단정한다.
+
+#### 구현 매핑 (현재 저장소)
+
+- **티어 1:** `investigate_ip.py` → `scrape_spam_sites_keywords_via_ddg` — 기본값으로 **`ddg_site` 도메인 전부** 순회 (상한은 `--ddg-site-limit N`으로만).
+- **티어 1 산출물:** 매 실행마다 `data/tier1_logs/YYYY-MM-DD_{IP}.json`에 도메인별 히트 수·스니펫 키워드·샘플 URL·**`tier2_default`**(당시 기본 트리거 기준 티어2 후보 여부·메타)를 저장 (`schema_version` 필드, `--no-tier1-json`으로 끔). `*.json`은 `.gitignore`, `data/tier1_logs/.gitkeep`으로 디렉터리만 추적.
+- **집계:** `python scripts/export_tier1_logs.py -o 원하는.csv` 로 JSON 전부를 도메인 단위 CSV로 합침(`source_json` 열). `--stats` 로 도메인별 “히트가 난 고유 IP 수” 요약(stderr). `--tier2-columns` 로 티어2 열 추가: JSON의 `tier2_default`와 `suggest_tier2_from_tier1_logs`가 같은 규칙으로 임베드 우선·불충분 시 재계산; `--tier2-force-recompute` 로 임베드 무시. `--tier2-min-hit-domains` / `--tier2-fraud-single` 는 재계산 시에만 적용. `per_domain`이 비어 있어도 스캔 단위로 **`domain=_scan_` 행 한 줄**을 넣어 티어2 열만이라도 남김 (`--no-scan-summary-row`로 끔).
+- **큐 유지보수:** `python scripts/report_tier2_queue_stale.py [--days N]` 로 `tier2_queue.md`에서 추가일이 오래된 행을 목록화.
+- **큐 정렬:** `python scripts/sort_tier2_queue.py` 로 `tier2_queue.md` 데이터 행을 **우선순위 내림차순**으로 재배치.
+- **티어 2 큐:** DDG 히트 도메인 수 ≥ `--tier2-min-hit-domains`(기본 2)이거나, `--tier2-fraud-single` 사용 시 **단일 도메인+스니펫 사기 키워드**면 `data/tier2_queue.md`에 후속 조사 한 줄 자동 추가 (`--no-tier2-queue`로 끔). 같은 IP·같은 날 중복 행은 생략. 표에 **우선순위**(1–10)·**권장 조치**(샘플 URL 또는 DDG 힌트)가 채워진다.
+- **소급 적용:** `python scripts/suggest_tier2_from_tier1_logs.py` 로 기존 `tier1_logs/*.json`만으로 후보를 stdout에 나열하고, `--apply`로 큐에 반영. JSON 경로를 인자로 주면 해당 파일만 처리(`export_tier1_logs`와 동일 패턴).
+- **티어 3 (이자나만):** `scrape_izanaholdings` — DDG 게시판 검색 후, 기본 **목록 최대 15페이지**까지 순회. 목록을 끄려면 `--izana-list-pages 0`(검색만).
+- **티어 2** 본문 확인은 대부분 **수동(브라우저)**. 자동 페치를 넣을 때는 사이트마다 파서·로봇 정책을 따른다.
+
+### 2.5 왜 izanaholdings에 전용(깊은) 스크래퍼가 있는가
+
+- **작성자 IP가 게시글 메타에 노출**되는 것이 확인되어, 티어 3 자동화의 **대표 사례**로 두었다 (`data/spammed_sites.md`).
+- 다른 행은 구조가 제각각이라 **전부 티어 3 전용 모듈**을 두지 않고, 우선 **티어 1 DDG**로 동일하게 커버한다. 텔레그램 등은 스니펫에서 자동 추출하지 않는다 (노이즈 방지).
+- 새 사이트에서도 HTML에 작성자 IP가 안정적으로 잡히면 `scripts/scrapers/`에 모듈을 추가하고, 표 스크래퍼 컬럼에 유형을 적는다.
+
+### 2.6 전체 루프 (개념도)
 
 ```
 [Seed IP]
     │
     ▼
-[1] Google/Naver 검색: "IP주소"
+[1] 검색: "IP주소"  [자동: investigate_ip.py / 수동: Google]
     │
     ▼
-[2] 검색 결과에서 게시글 수집
-    - 게시판/사이트 URL
-    - 게시글 제목/내용 요약
-    - 게시 날짜
-    - 게시자 닉네임
+[2] 게시글·스니펫에서 IOC 추출
     │
-    ▼
-[3] 게시글에서 IOC 추출
-    - 텔레그램 핸들 (@xxx)
-    - 전화번호
-    - 카카오 ID
-    - 도메인/URL
-    - 닉네임/계정명
-    - 브랜드명 (통신사 이름 등)
-    - 추가 IP 주소
-    │
-    ▼
-[4] 추출된 IOC를 ioc_registry.md에 등록 (status: 미조사)
-    │
-    ▼
-[5] 미조사 IOC를 다시 검색 → [2]로 반복
-    │
-    ▼
-[6] 연결된 IOC 묶음이 일정 크기 이상이면 campaigns.md에 클러스터 등록
+    ├──────────────────┐
+    ▼                  ▼
+[3a] ioc_registry     [3b] pivot_queue (새 IP)
+    │                  │
+    └────────┬─────────┘
+             ▼
+[4] IOC 재검색 → [2]로 (역피벗)
+             │
+             ▼
+[5] campaigns.md 클러스터 등록  [수동]
 ```
 
 ---

@@ -17,7 +17,7 @@ generate_reports.py - 조사 결과에서 방어 산출물 자동 생성
 import argparse
 import sys
 from collections import defaultdict
-from datetime import date
+from datetime import date, timedelta
 from pathlib import Path
 
 # utils.py가 같은 scripts/ 폴더에 있음
@@ -27,6 +27,9 @@ from utils import (
     parse_index, parse_seed_ips, parse_telegram_iocs, parse_domain_iocs,
     parse_brand_names, parse_spammed_sites,
     read_report_confidence,
+    read_report_lifecycle,
+    default_ttl_days_for_infra,
+    blocklist_entry_expired,
 )
 
 REPORTS = ROOT / "reports"
@@ -57,14 +60,30 @@ def get_blocklist_ips(min_confidence: str = 'MEDIUM') -> list[dict]:
         confidence, cluster = read_report_confidence(entry.report_path)
         entry.confidence = confidence
 
+        lc = read_report_lifecycle(entry.report_path)
+        if lc.get('lifecycle_state') in ('STALE', 'RETIRED'):
+            continue
+
+        ttl = lc.get('ttl_days')
+        if ttl is None:
+            ttl = default_ttl_days_for_infra(entry.infra)
+        last_seen = lc.get('last_seen')
+        if blocklist_entry_expired(last_seen, ttl, date.today()):
+            continue
+
         rank = CONFIDENCE_RANK.get(confidence, 0)
         if rank >= min_rank:
+            exp_s = ''
+            if last_seen and ttl:
+                exp = last_seen + timedelta(days=ttl)
+                exp_s = f'expires {exp.isoformat()}'
             result.append({
                 'ip': entry.ip,
                 'confidence': confidence,
                 'cluster': cluster or entry.cluster,
                 'service': entry.service,
                 'status': entry.status,
+                'expires_note': exp_s,
             })
 
     # 중복 제거 (동일 IP 여러 서비스)
@@ -80,6 +99,8 @@ def get_blocklist_ips(min_confidence: str = 'MEDIUM') -> list[dict]:
             for s in r['service'].split(','):
                 if s and s not in existing['service']:
                     existing['service'] += f',{s}'
+            if r.get('expires_note') and not existing.get('expires_note'):
+                existing['expires_note'] = r['expires_note']
 
     return sorted(deduped, key=lambda x: (x['cluster'], x['ip']))
 
@@ -102,7 +123,9 @@ def write_blocklist(ips: list[dict], min_confidence: str):
     for cluster, group in sorted(cluster_groups.items()):
         lines.append(f'# --- {cluster} ---')
         for e in group:
-            lines.append(f"{e['ip']}  # {e['cluster']} | {e['confidence']} | {e['service']}")
+            tail = e.get('expires_note', '')
+            extra = f' | {tail}' if tail else ''
+            lines.append(f"{e['ip']}  # {e['cluster']} | {e['confidence']} | {e['service']}{extra}")
         lines.append('')
 
     path.write_text('\n'.join(lines), encoding='utf-8')
@@ -212,8 +235,12 @@ def write_summary(blocklist_count: int, tg_count: int):
     partial_unique = sum(1 for e in progress_entries if e.status == 'PARTIAL')
 
     svc_label = {'svc_a': '서비스A', 'gifticon': '기프티콘', 'svc_c': '서비스C'}
+    svc_order = ('svc_a', 'gifticon', 'svc_c')
     svc_rows = []
-    for svc, stats in by_service.items():
+    for svc in svc_order:
+        if svc not in by_service:
+            continue
+        stats = by_service[svc]
         t = stats['total']
         d = stats['done']
         p = stats['partial']
@@ -272,8 +299,8 @@ def write_summary(blocklist_count: int, tg_count: int):
 
 ## 다음 우선 작업 (STATUS.md 참조)
 
-1. `python scripts/investigate_ip.py --batch --service ocb --limit 5`
-2. `python scripts/investigate_ip.py --batch --service bizcon --limit 5`
+1. `python scripts/investigate_ip.py --batch --service svc_a --limit 5`
+2. `python scripts/investigate_ip.py --batch --service svc_c --limit 5`
 3. `python scripts/investigate_ip.py --batch --service gifticon --limit 10`
 4. `python scripts/generate_reports.py` (재실행하면 자동 업데이트)
 """

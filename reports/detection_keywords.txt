@@ -1,5 +1,5 @@
 # PointPivot Detection Keywords
-# Generated: 2026-04-07
+# Generated: 2026-04-09
 # WAF/IDS 차단 룰, 스팸 필터에 활용
 
 # === 브랜드명 (확인된 사기 조직) ===

@@ -10,7 +10,7 @@
 **상태:** 🔴 활성 (Active)  
 **신뢰도:** HIGH  
 **최초 발견:** 2026-04-06  
-**마지막 업데이트:** 2026-04-07  
+**마지막 업데이트:** 2026-04-09  
 
 ### 개요
 서비스A/기프티콘 차단 요청에서 처음 드러난 선불유심내구제/소액대출 스팸 + ATO 네트워크.
@@ -51,6 +51,7 @@
 | brrsim77.isweb.co.kr | 뽀로로통신 홍보 | PARTIAL |
 | abab1768.isweb.co.kr | 곰돌이통신 홍보 | UNVERIFIED |
 | abab1768abab1768.isweb.co.kr | 곰돌이통신 홍보 (변형) | UNVERIFIED |
+| labubu.isweb.co.kr | 라부부통신 홍보 | UNVERIFIED |
 
 ### 연결된 닉네임
 
@@ -72,7 +73,7 @@
 ### 피해 사이트 (일부)
 
 izanaholdings.com, gjw.or.kr, channelpnu.pusan.ac.kr, 사랑나누미.com,  
-haccpkoreamall.com, hs.ac.kr, bonghwanews.com, dancecode.kr 외 다수
+haccpkoreamall.com, hs.ac.kr, bonghwanews.com, dancecode.kr, www.matcl.com 외 다수
 
 → 전체 목록: `data/spammed_sites.md`
 
@@ -90,9 +91,9 @@ haccpkoreamall.com, hs.ac.kr, bonghwanews.com, dancecode.kr 외 다수
 
 ### 미확인 사항 (추가 조사 필요)
 
-- [ ] 221.143.197.13 직접 게시 증거 확보 (2026-04-07 izanaholdings 재검증에서도 exact IP 결과 없음)
-- [ ] @abab1768, @the_usim에서 추가 IP 피벗
-- [ ] kimyoojin18 / @brrsim_77의 추가 residential IP가 다른 피해 사이트에도 반복 등장하는지 교차 확인
+- [ ] 221.143.197.13 직접 게시 증거 확보 (2026-04-09: exact + **공지 보드 list 35p·read 작성자 IP 완전 일치**까지 0건; 과거/타 보드는 미점검)
+- [x] @abab1768 / @the_usim 교차 피해 사이트: **2026-04-09** 공개 색인 기준 `www.matcl.com` 다수 스팸 스레드 확인 — **추가 작성자 IP 피벗은 미수**
+- [ ] kimyoojin18 / @brrsim_77의 추가 residential IP가 다른 피해 사이트에도 반복 등장하는지 교차 확인 (2026-04-09 DDG 샘플: `220.123.216.40` 단독, `218.49.179.79`·`125.132.9.140`·`14.51.2.179` 결합 검색에서도 **색인 스니펫에 해당 IPv4 미등장** — 교차 게시 **미발견**으로 기록, 스크립트 `ddg_site` 일괄은 여전히 권장)
 - [ ] 달림폰 브랜드와의 연결 확인
 
 ---
