@@ -106,8 +106,9 @@ pointpivot/
 │   └── spammed_sites.md    ← 피해 사이트 목록
 ├── investigations/
 │   ├── INDEX.md            ← IP 전체 조사 인덱스
-│   ├── cluster1/           ← Cluster#1 확정 IP 보고서
-│   └── unclassified/       ← 미분류 IP 초안 보고서
+│   ├── cluster1/           ← Cluster#1 (내구제/유심 스팸)
+│   ├── cluster2/           ← Cluster#2 (불법 의약품, Vultr VPS)
+│   └── unclassified/       ← 미분류 (기프티콘 KR 등)
 ├── reports/
 │   └── summary.md          ← 현황 요약 (자동 생성)
 ├── scripts/                ← 조사 자동화 스크립트

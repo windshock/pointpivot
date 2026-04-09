@@ -118,5 +118,5 @@
 | 클러스터      | 폴더              | 설명                                    |
 | --------- | --------------- | ------------------------------------- |
 | Cluster#1 | `cluster1/`     | 뽀로로/곰돌이/라부부 통신 네트워크 (seed + 직접 피벗 IP) |
-| Cluster#2 | `cluster2/`     | 서비스C VPS 네트워크 (Vultr) — 미분석            |
-| 미분류       | `unclassified/` | 클러스터 미배정 IP                           |
+| Cluster#2 | `cluster2/`     | @YY77882 불법 의약품 자동화 인프라 (Vultr VPS)     |
+| 미분류       | `unclassified/` | 기프티콘 KR_RESIDENTIAL 등 클러스터 미배정 IP       |
