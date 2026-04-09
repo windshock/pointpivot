@@ -73,15 +73,10 @@
 
 ## 조사 진행률
 
-| 서비스 | 전체 | DONE | PARTIAL | UNVERIFIED | 진행률(1차 조사) |
-|---|---|---|---|---|---|
-| 서비스A | 8 | 2 | 6 | 0 | 100% |
-| 기프티콘 | 25 | 1 | 24 | 0 | 100% |
-| 서비스C | 31 | 0 | 31 | 0 | 100% |
-| **합계** | **64** | **3** | **61** | **0** | **100%** |
+> **최신 숫자는 [`reports/summary.md`](reports/summary.md)를 참조.** `python scripts/generate_reports.py`로 자동 갱신.
 
-> UNVERIFIED → 0: 64개 전수 1차 조사 완료(보고서 PARTIAL). DONE = izanaholdings 본문 직접 확인 또는 복수 공신뢰 출처.
-> ISP/인프라 정보 일괄 반영 완료(2026-04-09): KR_RESIDENTIAL(SK/KT/LG/abcle/HyosungITX), VPS_GLOBAL(Vultr AS20473).
+- 64개 전수 1차 조사 완료 (UNVERIFIED 0). DONE 전환 조건 = izanaholdings 본문 직접 확인 또는 복수 공신뢰 출처.
+- ISP/인프라 정보 일괄 반영 완료(2026-04-09): KR_RESIDENTIAL(SK/KT/LG/abcle/HyosungITX), VPS_GLOBAL(Vultr AS20473).
 
 → 전체 인덱스: `investigations/INDEX.md`
 

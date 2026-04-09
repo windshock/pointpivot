@@ -76,14 +76,8 @@ PointPivot은 이 조직들의 흔적(IP 주소, 텔레그램 핸들, 스팸 사
 
 ## 현재 조사 현황
 
-| 항목 | 현황 |
-|------|------|
-| 추적 중인 IP | 64개 (전수 1차 조사 완료) |
-| 차단 권고 IP | **7개** → [`reports/blocklist_ip.txt`](reports/blocklist_ip.txt) |
-| 확인된 텔레그램 | 18개 → [`data/ioc_registry.md`](data/ioc_registry.md) |
-| 피해 확인 사이트 | 21개 → [`data/spammed_sites.md`](data/spammed_sites.md) |
-
-→ 자동 집계 전체: [`reports/summary.md`](reports/summary.md)
+→ **[`reports/summary.md`](reports/summary.md)** 참조 (자동 생성, `python scripts/generate_reports.py`로 갱신)  
+→ 차단 IP 목록: **[`reports/blocklist_ip.txt`](reports/blocklist_ip.txt)**
 
 ---
 
