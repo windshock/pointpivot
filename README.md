@@ -20,7 +20,7 @@ PointPivot은 이 조직들의 흔적(IP 주소, 텔레그램 핸들, 스팸 사
 
 | 저는 이런 사람입니다 | 여기로 가세요 |
 |---------------------|---------------|
-| 서비스 보안 담당자 — 차단 IP가 필요합니다 | **[`reports/blocklist_ip.txt`](reports/blocklist_ip.txt)** |
+| 서비스 보안 담당자 — 차단 IP가 필요합니다 | **[`investigations/INDEX.md`](investigations/INDEX.md)** (DONE 행 필터) |
 | 어떤 조직을 발견했는지 보고 싶습니다 | **[`data/campaigns.md`](data/campaigns.md)** |
 | 현재 조사 진행 상황이 궁금합니다 | **[`reports/summary.md`](reports/summary.md)** |
 | 특정 IP를 조회하고 싶습니다 | **[`investigations/INDEX.md`](investigations/INDEX.md)** |
@@ -76,8 +76,7 @@ PointPivot은 이 조직들의 흔적(IP 주소, 텔레그램 핸들, 스팸 사
 
 ## 현재 조사 현황
 
-→ **[`reports/summary.md`](reports/summary.md)** 참조 (자동 생성, `python scripts/generate_reports.py`로 갱신)  
-→ 차단 IP 목록: **[`reports/blocklist_ip.txt`](reports/blocklist_ip.txt)**
+→ **[`reports/summary.md`](reports/summary.md)** 참조 (자동 생성, `python scripts/generate_reports.py`로 갱신)
 
 ---
 
@@ -110,7 +109,6 @@ pointpivot/
 │   ├── cluster1/           ← Cluster#1 확정 IP 보고서
 │   └── unclassified/       ← 미분류 IP 초안 보고서
 ├── reports/
-│   ├── blocklist_ip.txt    ← 차단 IP 목록 (자동 생성)
 │   └── summary.md          ← 현황 요약 (자동 생성)
 ├── scripts/                ← 조사 자동화 스크립트
 ├── STATUS.md               ← 에이전트 인수인계 문서

@@ -1,17 +1,15 @@
 #!/usr/bin/env python3
 """
-generate_reports.py - 조사 결과에서 방어 산출물 자동 생성
+generate_reports.py - 조사 데이터에서 현황 요약 자동 생성
 
 생성 파일:
-  reports/blocklist_ip.txt       - 신뢰도 HIGH/MEDIUM 확인된 IP
-  reports/ioc_telegram.txt       - 확인된 텔레그램 핸들
-  reports/detection_keywords.txt - 탐지 키워드 (브랜드명 + 사기 키워드)
-  reports/summary.md             - 전체 현황 요약
+  reports/summary.md  - 전체 현황 요약 (커버리지·클러스터·IOC 집계)
+
+IOC 원본은 data/ioc_registry.md, IP 원본은 investigations/INDEX.md.
+STIX/CSV 표준 포맷 export는 미래 계획(충분한 DONE 확보 후).
 
 사용법:
   python scripts/generate_reports.py
-  python scripts/generate_reports.py --min-confidence MEDIUM
-  python scripts/generate_reports.py --verbose
 """
 
 import argparse
@@ -23,180 +21,16 @@ from pathlib import Path
 # utils.py가 같은 scripts/ 폴더에 있음
 sys.path.insert(0, str(Path(__file__).parent))
 from utils import (
-    ROOT, INVESTIGATIONS,
+    ROOT,
     parse_index, parse_seed_ips, parse_telegram_iocs, parse_domain_iocs,
-    parse_brand_names, parse_spammed_sites,
-    read_report_confidence,
-    read_report_lifecycle,
-    default_ttl_days_for_infra,
-    blocklist_entry_expired,
+    parse_spammed_sites,
 )
 
 REPORTS = ROOT / "reports"
 TODAY = date.today().isoformat()
 
-CONFIDENCE_RANK = {'HIGH': 3, 'MEDIUM': 2, 'LOW': 1, 'UNVERIFIED': 0}
 
-DETECTION_KEYWORDS = [
-    # 사기 서비스 키워드
-    '선불유심', '내구제', '유심내구제', '유심매입', '소액대출', '급전', '비상금',
-    '포인트현금화', '기프티콘현금화', '상품권매입', '계정구매', '아이디매매',
-    # 플랫폼 키워드
-    '서비스A', '기프티콘', '서비스C',
-]
-
-
-def get_blocklist_ips(min_confidence: str = 'MEDIUM') -> list[dict]:
-    """블록리스트에 포함할 IP 목록 반환"""
-    min_rank = CONFIDENCE_RANK.get(min_confidence, 2)
-    entries = parse_index()
-    result = []
-
-    for entry in entries:
-        if entry.status != 'DONE':
-            continue
-
-        # 보고서 파일에서 신뢰도 읽기
-        confidence, cluster = read_report_confidence(entry.report_path)
-        entry.confidence = confidence
-
-        lc = read_report_lifecycle(entry.report_path)
-        if lc.get('lifecycle_state') in ('STALE', 'RETIRED'):
-            continue
-
-        ttl = lc.get('ttl_days')
-        if ttl is None:
-            ttl = default_ttl_days_for_infra(entry.infra)
-        last_seen = lc.get('last_seen')
-        if blocklist_entry_expired(last_seen, ttl, date.today()):
-            continue
-
-        rank = CONFIDENCE_RANK.get(confidence, 0)
-        if rank >= min_rank:
-            exp_s = ''
-            if last_seen and ttl:
-                exp = last_seen + timedelta(days=ttl)
-                exp_s = f'expires {exp.isoformat()}'
-            result.append({
-                'ip': entry.ip,
-                'confidence': confidence,
-                'cluster': cluster or entry.cluster,
-                'service': entry.service,
-                'status': entry.status,
-                'expires_note': exp_s,
-            })
-
-    # 중복 제거 (동일 IP 여러 서비스)
-    seen = {}
-    deduped = []
-    for r in result:
-        if r['ip'] not in seen:
-            seen[r['ip']] = r
-            deduped.append(r)
-        else:
-            # 서비스 병합
-            existing = seen[r['ip']]
-            for s in r['service'].split(','):
-                if s and s not in existing['service']:
-                    existing['service'] += f',{s}'
-            if r.get('expires_note') and not existing.get('expires_note'):
-                existing['expires_note'] = r['expires_note']
-
-    return sorted(deduped, key=lambda x: (x['cluster'], x['ip']))
-
-
-def write_blocklist(ips: list[dict], min_confidence: str):
-    path = REPORTS / 'blocklist_ip.txt'
-    lines = [
-        f'# PointPivot IP Blocklist',
-        f'# Generated: {TODAY}',
-        f'# Min confidence: {min_confidence}',
-        f'# Total: {len(ips)} IPs',
-        f'# Format: IP  # Cluster | Confidence | Services',
-        '',
-    ]
-
-    cluster_groups = defaultdict(list)
-    for entry in ips:
-        cluster_groups[entry['cluster']].append(entry)
-
-    for cluster, group in sorted(cluster_groups.items()):
-        lines.append(f'# --- {cluster} ---')
-        for e in group:
-            tail = e.get('expires_note', '')
-            extra = f' | {tail}' if tail else ''
-            lines.append(f"{e['ip']}  # {e['cluster']} | {e['confidence']} | {e['service']}{extra}")
-        lines.append('')
-
-    path.write_text('\n'.join(lines), encoding='utf-8')
-    print(f'  blocklist_ip.txt: {len(ips)}개 IP')
-    return len(ips)
-
-
-def write_telegram_iocs():
-    path = REPORTS / 'ioc_telegram.txt'
-    iocs = parse_telegram_iocs()
-    active = [t for t in iocs if t.pivot_status in ('DONE', 'PARTIAL')]
-
-    lines = [
-        f'# PointPivot Telegram IOC List',
-        f'# Generated: {TODAY}',
-        f'# Total: {len(active)} handles',
-        '',
-    ]
-
-    for t in active:
-        brand = f' ({t.brand})' if t.brand and t.brand != '-' else ''
-        lines.append(f'{t.handle}{brand}  # {t.cluster} | {t.pivot_status}')
-
-    path.write_text('\n'.join(lines), encoding='utf-8')
-    print(f'  ioc_telegram.txt: {len(active)}개 핸들')
-    return len(active)
-
-
-def write_domain_iocs():
-    path = REPORTS / 'ioc_domains.txt'
-    iocs = parse_domain_iocs()
-    active = [d for d in iocs if d.pivot_status in ('DONE', 'PARTIAL', 'UNVERIFIED')]
-
-    lines = [
-        f'# PointPivot Domain IOC List',
-        f'# Generated: {TODAY}',
-        f'# Total: {len(active)} domains',
-        '',
-    ]
-
-    for d in active:
-        lines.append(f'{d.domain}  # {d.ioc_type} | {d.linked_handle} | {d.cluster}')
-
-    path.write_text('\n'.join(lines), encoding='utf-8')
-    print(f'  ioc_domains.txt: {len(active)}개 도메인')
-    return len(active)
-
-
-def write_detection_keywords():
-    path = REPORTS / 'detection_keywords.txt'
-    brands = parse_brand_names()
-
-    lines = [
-        f'# PointPivot Detection Keywords',
-        f'# Generated: {TODAY}',
-        f'# WAF/IDS 차단 룰, 스팸 필터에 활용',
-        '',
-        '# === 브랜드명 (확인된 사기 조직) ===',
-    ]
-    for b in brands:
-        lines.append(b)
-
-    lines += ['', '# === 사기 서비스 키워드 ===']
-    for kw in DETECTION_KEYWORDS:
-        lines.append(kw)
-
-    path.write_text('\n'.join(lines), encoding='utf-8')
-    print(f'  detection_keywords.txt: 브랜드 {len(brands)}개 + 키워드 {len(DETECTION_KEYWORDS)}개')
-
-
-def write_summary(blocklist_count: int, tg_count: int):
+def write_summary():
     path = REPORTS / 'summary.md'
     entries = parse_index()
     seed_entries = parse_seed_ips()
@@ -297,12 +131,14 @@ def write_summary(blocklist_count: int, tg_count: int):
 
 ---
 
-## 방어 산출물
+## IOC 원본 경로
 
-| 산출물 | 항목 수 | 기준 |
-|---|---|---|
-| blocklist_ip.txt | {blocklist_count} | 신뢰도 MEDIUM 이상, DONE 상태, TTL 이내 |
-| ioc_telegram.txt | {tg_count} | 피벗 상태 PARTIAL 이상 |
+- **IP 전체 목록·상태:** [`investigations/INDEX.md`](../investigations/INDEX.md)
+- **텔레그램·도메인·닉네임:** [`data/ioc_registry.md`](../data/ioc_registry.md)
+- **클러스터 상세:** [`data/campaigns.md`](../data/campaigns.md)
+- **피해 사이트:** [`data/spammed_sites.md`](../data/spammed_sites.md)
+
+> 표준 포맷 export(STIX/CSV)는 DONE IP가 충분히 확보된 뒤 계획.
 
 ---
 
@@ -315,29 +151,15 @@ def write_summary(blocklist_count: int, tg_count: int):
 
 
 def main():
-    parser = argparse.ArgumentParser(description='PointPivot 보고서 자동 생성')
-    parser.add_argument('--min-confidence', default='MEDIUM',
-                        choices=['HIGH', 'MEDIUM', 'LOW'],
-                        help='블록리스트 최소 신뢰도 (기본: MEDIUM)')
-    parser.add_argument('--verbose', action='store_true')
-    args = parser.parse_args()
+    parser = argparse.ArgumentParser(description='PointPivot 현황 요약 생성')
+    parser.parse_args()
 
     REPORTS.mkdir(exist_ok=True)
-    print(f'\n보고서 생성 중 ({TODAY})...')
+    print(f'\n현황 요약 생성 중 ({TODAY})...')
 
-    ips = get_blocklist_ips(args.min_confidence)
-    ip_count = write_blocklist(ips, args.min_confidence)
-    tg_count = write_telegram_iocs()
-    write_domain_iocs()
-    write_detection_keywords()
-    write_summary(ip_count, tg_count)
+    write_summary()
 
-    print(f'\n완료. reports/ 폴더 확인: {REPORTS}')
-
-    if args.verbose:
-        print('\n[블록리스트 IP]')
-        for e in ips:
-            print(f"  {e['ip']} ({e['confidence']}, {e['cluster']})")
+    print(f'\n완료. reports/summary.md 확인: {REPORTS / "summary.md"}')
 
 
 if __name__ == '__main__':

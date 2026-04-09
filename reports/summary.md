@@ -39,12 +39,14 @@
 
 ---
 
-## 방어 산출물
+## IOC 원본 경로
 
-| 산출물 | 항목 수 | 기준 |
-|---|---|---|
-| blocklist_ip.txt | 7 | 신뢰도 MEDIUM 이상, DONE 상태, TTL 이내 |
-| ioc_telegram.txt | 5 | 피벗 상태 PARTIAL 이상 |
+- **IP 전체 목록·상태:** [`investigations/INDEX.md`](../investigations/INDEX.md)
+- **텔레그램·도메인·닉네임:** [`data/ioc_registry.md`](../data/ioc_registry.md)
+- **클러스터 상세:** [`data/campaigns.md`](../data/campaigns.md)
+- **피해 사이트:** [`data/spammed_sites.md`](../data/spammed_sites.md)
+
+> 표준 포맷 export(STIX/CSV)는 DONE IP가 충분히 확보된 뒤 계획.
 
 ---
 

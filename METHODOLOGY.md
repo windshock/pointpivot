@@ -46,7 +46,7 @@ seed_ips.md / pivot_queue.md
         → investigations/{cluster1,unclassified}/*.md
         → investigate_ioc.py → pivot_queue.md (신규 IP)
         → ioc_registry.md / campaigns.md / INDEX.md
-        → generate_reports.py → reports/blocklist_ip.txt
+        → generate_reports.py → reports/summary.md
 ```
 
 ### 2.4 피해 사이트 스크래핑: 전부 얕게, 깊게는 신호(데이터)로
@@ -322,41 +322,15 @@ Python crawler를 먼저 만드는 것보다, 브라우저로 몇 건의 수동 
 
 ## 12. 블록리스트 출력 규칙
 
-`reports/` 폴더에 아래 포맷으로 산출물을 생성한다.
+`reports/summary.md`에 현황 요약을 자동 생성한다 (`python scripts/generate_reports.py`).
 
-### 포함 기준
+IOC 원본 데이터는 아래 파일이 각각의 단일 소스다:
 
-| 산출물 | 포함 조건 |
-|---|---|
-| `blocklist_ip.txt` | 조사 상태 `DONE` + 신뢰도 `HIGH` 또는 `MEDIUM` |
-| `ioc_telegram.txt` | 피벗 상태 `DONE` 또는 `PARTIAL` (+ 클러스터 귀속 확인) |
-| `detection_keywords.txt` | 브랜드명, 핸들명, 서비스 키워드 (Cluster#1 이상 확인된 것) |
+| 데이터 | 원본 위치 |
+|--------|-----------|
+| IP 전체 목록·상태 | `investigations/INDEX.md` |
+| 텔레그램·도메인·닉네임 IOC | `data/ioc_registry.md` |
+| 캠페인 클러스터 | `data/campaigns.md` |
+| 피해 사이트 목록 | `data/spammed_sites.md` |
 
-### 파일 포맷
-
-```
-# blocklist_ip.txt
-# Generated: YYYY-MM-DD | Cluster#1 confirmed IPs
-221.143.197.135
-221.143.197.136
-```
-
-```
-# ioc_telegram.txt
-# Generated: YYYY-MM-DD
-@brrsim_77    # 뽀로로통신 | Cluster#1 | DONE
-@abab1768     # 곰돌이통신 | Cluster#1 | PARTIAL
-```
-
----
-
-## 14. 최종 산출물 목표
-
-| 산출물 | 위치 | 설명 |
-|---|---|---|
-| IP 블록리스트 | `reports/blocklist_ip.txt` | 확인된 악성 IP 목록 |
-| 텔레그램 IOC | `reports/ioc_telegram.txt` | 확인된 텔레그램 핸들 |
-| 캠페인 클러스터 | `data/campaigns.md` | 연결된 IOC 묶음 |
-| 피해 사이트 목록 | `data/spammed_sites.md` | 스팸 피해 사이트 |
-| 탐지 키워드 | `reports/detection_keywords.txt` | 차단 룰용 키워드 |
-| 서비스별 분석 | `reports/` | 서비스A/기프티콘/서비스C별 |
+> 표준 포맷 export(STIX/CSV)는 DONE IP가 충분히 확보된 뒤 계획.

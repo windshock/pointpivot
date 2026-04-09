@@ -22,7 +22,7 @@
 
 | 자동 OK | 사람 확인 필수 |
 |---------|------------------|
-| `generate_reports.py`, `blocklist_ip.txt` 생성 | 클러스터 최종 귀속, `campaigns.md` 서술 |
+| `generate_reports.py` → `summary.md` 생성 | 클러스터 최종 귀속, `campaigns.md` 서술 |
 | `investigate_ip.py` 초안 보고서 | DDG 스니펫만 있는 IOC의 **DONE** 판정 |
 | `investigate_ioc.py` → `pivot_queue.md` | 무고한 IP·캐시 IP 오탐 제거 |
 | izanaholdings **직접 본문**에서 추출한 작성자 IP | 동일 IP의 **법적·운영 차단** 요청 문구 |
