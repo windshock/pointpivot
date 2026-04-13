@@ -74,6 +74,26 @@ PointPivot은 이 조직들의 흔적(IP 주소, 텔레그램 핸들, 스팸 사
 
 ---
 
+### 🟡 Cluster #3 — 먹튀/도박/통장협박 스팸 군 (@GO174)
+
+> KT 모바일·고정회선 IP를 돌려가며 카페24 게시판에 먹튀/도박/계좌매입 스팸을 올리는 캠페인
+
+**이 조직이 하는 일:**
+- `@GO174`로 텔레그램 유도
+- 먹튀검증, 충전계좌삽니다, 통장협박, 계좌매입류 문구를 템플릿처럼 반복
+- 카페24 쇼핑몰 상품 Q&A/게시판을 단기 집중 도배
+
+| 항목 | 내용 |
+|------|------|
+| 대표 seed | `118.235.25.44` |
+| 추가 확보 IP | `118.235.12.181` 외 11개 (`118.235.x.x` 중심, 1건 `39.7.x.x`) |
+| 텔레그램 | `@GO174` |
+| 상태 | 캠페인 라벨은 유지, 개별 IP는 아직 `Cluster#3 추정` / `PARTIAL` |
+
+→ 상세: [`data/campaigns.md`](data/campaigns.md) · [`investigations/INDEX.md`](investigations/INDEX.md)
+
+---
+
 ## 현재 조사 현황
 
 → **[`reports/summary.md`](reports/summary.md)** 참조 (자동 생성, `python scripts/generate_reports.py`로 갱신)
@@ -108,7 +128,7 @@ pointpivot/
 │   ├── INDEX.md            ← IP 전체 조사 인덱스
 │   ├── cluster1/           ← Cluster#1 (내구제/유심 스팸)
 │   ├── cluster2/           ← Cluster#2 (불법 의약품, Vultr VPS)
-│   └── unclassified/       ← 미분류 (기프티콘 KR 등)
+│   └── unclassified/       ← 미분류 + Cluster#3 추정 IP 보관
 ├── reports/
 │   └── summary.md          ← 현황 요약 (자동 생성)
 ├── scripts/                ← 조사 자동화 스크립트

@@ -114,6 +114,7 @@ def parse_index() -> list[IPEntry]:
         '## 기프티콘 IP 목록': 'gifticon',
         '## 서비스C IP 목록': 'svc_c',
         '## 피벗으로 추가 확보한 IP': 'pivot',
+        '## @GO174 역피벗으로 추가 확보한 IP': 'pivot',
     }
 
     for section_header, service in service_map.items():
