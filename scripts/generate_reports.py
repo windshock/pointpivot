@@ -90,6 +90,7 @@ def write_summary():
 
     n_cluster1 = sum(1 for e in unique_entries if 'Cluster#1' in e.cluster)
     n_cluster2 = sum(1 for e in unique_entries if 'Cluster#2' in e.cluster)
+    n_cluster3 = sum(1 for e in unique_entries if 'Cluster#3' in e.cluster)
     n_unclassified = sum(1 for e in unique_entries if e.cluster.strip() in ('-', '미분류', ''))
     total_tracked = len(unique_entries)
 
@@ -116,7 +117,8 @@ def write_summary():
 |---|---|---|---|
 | Cluster#1 | 🔴 활성 | {n_cluster1} | @brrsim_77, @abab1768, @the_usim (내구제/유심 스팸) |
 | Cluster#2 | 🟡 부분 확인 | {n_cluster2} | @YY77882 (불법 의약품 자동화, Vultr VPS) |
-| 미분류 | 추가 조사 필요 | {n_unclassified} | 기프티콘 KR_RESIDENTIAL 등 — DDG에서 IOC 미발견 |
+| Cluster#3 | 🟡 부분 확인 | {n_cluster3} | @GO174 (먹튀/도박/통장협박 스팸, KT 118.235.x.x) |
+| 미분류 | 추가 조사 필요 | {n_unclassified} | 기프티콘 KR_RESIDENTIAL 등 — 클러스터 미배정 |
 | **전체** | | **{total_tracked}** | seed {progress_total} + 피벗 {total_tracked - progress_total} |
 
 ---
