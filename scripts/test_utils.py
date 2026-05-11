@@ -31,7 +31,11 @@ from proxy_collectors.base import (  # noqa: E402
     write_yaml,
 )
 from proxy_collectors.export_searxng_proxies import build_searxng_proxy_config  # noqa: E402
-from proxy_collectors.validator import validate_proxy_record, build_live_inventory  # noqa: E402
+from proxy_collectors.validator import (  # noqa: E402
+    ProxyError,
+    build_live_inventory,
+    validate_proxy_record,
+)
 from utils import get_unverified_ips, parse_index, parse_seed_ips  # noqa: E402
 
 
@@ -215,6 +219,21 @@ class ParserSmokeTests(unittest.TestCase):
 
         self.assertFalse(result['validated'])
         self.assertEqual(result['failure_reason'], 'bad_response')
+
+    def test_proxy_validator_records_proxy_errors_without_crashing(self) -> None:
+        record = normalize_proxy_record(
+            '1.2.3.4:8080',
+            source='proxygather',
+            source_url='https://example.test/http.txt',
+        )
+
+        def fail_proxy(*args, **kwargs):
+            raise ProxyError('Tunnel connection failed: 400 Bad Request')
+
+        result = validate_proxy_record(record, request_get=fail_proxy)
+
+        self.assertFalse(result['validated'])
+        self.assertEqual(result['failure_reason'], 'connection_error')
 
     def test_searxng_proxy_export_includes_only_validated_records(self) -> None:
         records = [

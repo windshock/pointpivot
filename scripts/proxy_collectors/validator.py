@@ -18,10 +18,13 @@ from typing import Callable
 
 try:
     import requests
-    from requests import RequestException
+    from requests.exceptions import ConnectionError as RequestsConnectionError
+    from requests.exceptions import ProxyError, Timeout
 except ImportError:
     requests = None
-    RequestException = Exception
+    RequestsConnectionError = Exception
+    ProxyError = Exception
+    Timeout = Exception
 
 SCRIPTS = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(SCRIPTS))
@@ -62,13 +65,13 @@ def _failure(record: ProxyRecord, reason: str, latency_ms: int | None) -> ProxyR
 
 def _classify_exception(exc: Exception) -> str:
     text = str(exc).lower()
-    if requests is not None and isinstance(exc, requests.Timeout):
+    if requests is not None and isinstance(exc, Timeout):
         return 'timeout'
     if '407' in text or 'auth' in text:
         return 'auth_required'
-    if requests is not None and isinstance(exc, requests.ProxyError):
+    if requests is not None and isinstance(exc, ProxyError):
         return 'connection_error'
-    if requests is not None and isinstance(exc, requests.ConnectionError):
+    if requests is not None and isinstance(exc, RequestsConnectionError):
         return 'connection_error'
     if 'socks' in text or 'protocol' in text or 'scheme' in text:
         return 'protocol_error'
