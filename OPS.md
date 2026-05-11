@@ -78,3 +78,19 @@ POS 제휴사 IP는 오탐 검증용 데이터이며 기본 배치에서 제외�
 .venv/bin/python scripts/investigate_ioc.py "@brrsim_77"
 .venv/bin/python scripts/investigate_ip.py --batch --service svc_a --limit 5
 ```
+
+## 8. 선택 검색 provider (SearXNG)
+
+기본 검색 provider는 `ddg`이며, SearXNG는 선택적 Tier-1 후보 수집원이다. SearXNG/DDG 검색 결과는 모두 `search_snippet_only` 증거로 취급하고, 원문 확인 전에는 DONE/HIGH 판정 근거로 쓰지 않는다.
+
+```bash
+# SearXNG 로컬 구동은 공식 설정 문서를 우선한다. 아래는 최소 예시.
+docker run -d --name searxng -p 8080:8080 searxng/searxng
+
+export POINTPIVOT_SEARCH_PROVIDER=hybrid   # ddg | searxng | hybrid
+export POINTPIVOT_SEARXNG_URL=http://localhost:8080
+
+.venv/bin/python scripts/investigate_ip.py 1.2.3.4 --dry-run
+```
+
+`hybrid` 기본 동작은 SearXNG를 먼저 시도하고, 실패하거나 0건이면 DDG로 fallback한다. 최근성 판단은 검색 provider의 "최근 결과"가 아니라 원문 `datePublished`/`작성일`/캡처 시점으로 한다.

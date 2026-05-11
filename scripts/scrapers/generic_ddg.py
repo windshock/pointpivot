@@ -1,11 +1,14 @@
 """
-피해 사이트 도메인에 대해 DuckDuckGo `site:도메인 "IP"` 검색.
+피해 사이트 도메인에 대해 검색 provider로 `site:도메인 "IP"` 검색.
 스니펫에서 사기 키워드만 수집 (텔레그램/도메인 자동 추출은 노이즈 위험으로 제외).
+
+파일명은 호환성을 위해 generic_ddg.py를 유지한다.
 """
 
 from __future__ import annotations
 
 import time
+from collections import Counter
 from typing import Callable
 
 from .registry import ddg_scrape_domains
@@ -14,6 +17,18 @@ FRAUD_KEYWORDS = [
     '내구제', '선불유심', '유심매입', '기프티콘', '포인트현금화',
     '소액대출', '급전', '계정구매', '약물', '엑스터시',
 ]
+
+
+def _sample_result(result: dict) -> dict:
+    return {
+        'title': (result.get('title') or '')[:200],
+        'href': (result.get('href') or '')[:200],
+        'provider': result.get('provider', ''),
+        'engine': result.get('engine', ''),
+        'query': result.get('query', ''),
+        'fetched_at': result.get('fetched_at', ''),
+        'evidence_level': result.get('evidence_level', 'search_snippet_only'),
+    }
 
 
 def scrape_spam_sites_keywords_via_ddg(
@@ -36,10 +51,11 @@ def scrape_spam_sites_keywords_via_ddg(
     keywords: set[str] = set()
     hits: dict[str, int] = {}
     per_domain: list[dict] = []
+    provider_counts: Counter[str] = Counter()
 
     for dom in domains:
         query = f'site:{dom} "{ip}"'
-        print(f'  [DDG:site:{dom}] {query[:70]}...')
+        print(f'  [검색:site:{dom}] {query[:70]}...')
         try:
             results = search(query, 15)
         except Exception as e:
@@ -50,6 +66,7 @@ def scrape_spam_sites_keywords_via_ddg(
             (r.get('title') or '') + ' ' + (r.get('body') or '')
             for r in results
         )
+        provider_counts.update((r.get('provider') or 'unknown') for r in results)
         dom_kw = sorted({kw for kw in FRAUD_KEYWORDS if kw in blob})
         for kw in dom_kw:
             keywords.add(kw)
@@ -58,6 +75,7 @@ def scrape_spam_sites_keywords_via_ddg(
             'n_results': len(results),
             'fraud_keywords': dom_kw,
             'sample_hrefs': [(r.get('href') or '')[:200] for r in results[:3]],
+            'sample_results': [_sample_result(r) for r in results[:3]],
         })
         time.sleep(sleep_s)
 
@@ -66,4 +84,5 @@ def scrape_spam_sites_keywords_via_ddg(
         'domains_checked': domains,
         'hits': hits,
         'per_domain': per_domain,
+        'provider_counts': dict(provider_counts),
     }
