@@ -7,5 +7,12 @@ __pycache__/
 # OS
 .DS_Store
 
+# Local runtime / secrets
+*.pem
+*.key
+*.log
+mempalace.yaml
+data/tier1_export.csv
+
 # 티어1 DDG 스캔 로그 (디렉터리는 .gitkeep, JSON만 제외)
 data/tier1_logs/*.json

@@ -17,6 +17,7 @@
 
 > `ttl_days` 기본: KR_RESIDENTIAL 90, VPS_GLOBAL 30, KR_MOBILE 60.  
 > `STALE`/`RETIRED` 는 `generate_reports.py` 블록리스트에서 제외. [OPS.md](../OPS.md) 참고.
+> DONE 보고서는 `last_verified`, `ttl_days`, `lifecycle_state`를 반드시 채운다. 미기재 시 `stale_check.py`가 재검증 후보로 표시한다.
 
 ---
 

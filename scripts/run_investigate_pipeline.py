@@ -6,12 +6,12 @@ investigate_ip → export_tier1_logs(--tier2-columns) → suggest_tier2_from_tie
 investigate·export·suggest에 동일하게 넘긴다(알 수 없는 인자에 동일 플래그가 있으면 제거 후 주입).
 
 사용법:
-    python scripts/run_investigate_pipeline.py 221.143.197.13
-    python scripts/run_investigate_pipeline.py --batch --limit 3
-    python scripts/run_investigate_pipeline.py --no-export --no-suggest 1.2.3.4
-    python scripts/run_investigate_pipeline.py --suggest-apply --tier2-fraud-single 1.2.3.4
-    python scripts/run_investigate_pipeline.py -o /tmp/t1.csv --izana-list-pages 0 1.2.3.4
-    python scripts/run_investigate_pipeline.py --tier2-force-recompute 1.2.3.4
+    .venv/bin/python scripts/run_investigate_pipeline.py 221.143.197.13
+    .venv/bin/python scripts/run_investigate_pipeline.py --batch --limit 3
+    .venv/bin/python scripts/run_investigate_pipeline.py --no-export --no-suggest 1.2.3.4
+    .venv/bin/python scripts/run_investigate_pipeline.py --suggest-apply --tier2-fraud-single 1.2.3.4
+    .venv/bin/python scripts/run_investigate_pipeline.py -o /tmp/t1.csv --izana-list-pages 0 1.2.3.4
+    .venv/bin/python scripts/run_investigate_pipeline.py --tier2-force-recompute 1.2.3.4
 """
 
 from __future__ import annotations

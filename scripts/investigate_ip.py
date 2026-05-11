@@ -3,13 +3,13 @@
 investigate_ip.py - DuckDuckGo + 다중 사이트 스크래핑(izanaholdings + DDG site:) 기반 IP 자동 조사
 
 사용법:
-    python scripts/investigate_ip.py 221.143.197.13
-    python scripts/investigate_ip.py 221.143.197.13 --izana-list-pages 0   # 이자나 목록 생략(얕게)
-    python scripts/investigate_ip.py 221.143.197.13 --ddg-site-limit 8    # 피해 사이트 DDG 8도메인만
+    .venv/bin/python scripts/investigate_ip.py 221.143.197.13
+    .venv/bin/python scripts/investigate_ip.py 221.143.197.13 --izana-list-pages 0   # 이자나 목록 생략(얕게)
+    .venv/bin/python scripts/investigate_ip.py 221.143.197.13 --ddg-site-limit 8    # 피해 사이트 DDG 8도메인만
     # 티어1 JSON: data/tier1_logs/  티어2 큐: data/tier2_queue.md (--no-tier1-json / --no-tier2-queue)
     # 소급: scripts/suggest_tier2_from_tier1_logs.py [--apply]  |  원스톱: run_investigate_pipeline.py
-    python scripts/investigate_ip.py --batch --limit 5
-    python scripts/investigate_ip.py --batch --service svc_a --limit 3
+    .venv/bin/python scripts/investigate_ip.py --batch --limit 5
+    .venv/bin/python scripts/investigate_ip.py --batch --service svc_a --limit 3
 """
 
 from __future__ import annotations
@@ -358,9 +358,9 @@ def generate_report(data: dict) -> str:
 def main():
     parser = argparse.ArgumentParser(description='IP 자동 조사 스크립트')
     parser.add_argument('ip', nargs='?', help='조사할 IP 주소')
-    parser.add_argument('--batch', action='store_true', help='seed_ips.md에서 UNVERIFIED IP 배치 조사')
+    parser.add_argument('--batch', action='store_true', help='seed_ips.md에서 UNVERIFIED IP 배치 조사 (POS 오탐 검증용은 기본 제외)')
     parser.add_argument('--limit', type=int, default=5, help='배치 최대 처리 수 (기본: 5)')
-    parser.add_argument('--service', choices=['svc_a', 'gifticon', 'svc_c'], help='특정 서비스만 처리')
+    parser.add_argument('--service', choices=['svc_a', 'gifticon', 'svc_c', 'pos'], help='특정 서비스만 처리 (pos 지정 시에만 POS 오탐 검증용 포함)')
     parser.add_argument('--dry-run', action='store_true', help='파일 저장 없이 출력만')
     parser.add_argument(
         '--ddg-site-limit',

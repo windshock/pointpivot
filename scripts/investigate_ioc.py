@@ -5,8 +5,8 @@ DuckDuckGo 검색으로 스니펫·URL에서 IPv4를 추출하고 pivot_queue에
 (izanaholdings는 IP 기반 스크래퍼만 있음 — 핸들 전용 직접 스크래핑은 브라우저 조사로 보완.)
 
 사용법:
-    python scripts/investigate_ioc.py "@brrsim_77"
-    python scripts/investigate_ioc.py kimyoojin18 --nick
+    .venv/bin/python scripts/investigate_ioc.py "@brrsim_77"
+    .venv/bin/python scripts/investigate_ioc.py kimyoojin18 --nick
 """
 
 from __future__ import annotations

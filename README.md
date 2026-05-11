@@ -96,7 +96,7 @@ PointPivot은 이 조직들의 흔적(IP 주소, 텔레그램 핸들, 스팸 사
 
 ## 현재 조사 현황
 
-→ **[`reports/summary.md`](reports/summary.md)** 참조 (자동 생성, `python scripts/generate_reports.py`로 갱신)
+→ **[`reports/summary.md`](reports/summary.md)** 참조 (자동 생성, `.venv/bin/python scripts/generate_reports.py`로 갱신)
 
 ---
 

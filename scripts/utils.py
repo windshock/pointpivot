@@ -102,6 +102,11 @@ def normalize_status(raw: str) -> str:
 
 # ── INDEX.md 파싱 ─────────────────────────────────────────────────────────────
 
+def _section_headers(text: str) -> list[str]:
+    """마크다운 2단계 섹션 헤더 목록."""
+    return [m.group(0).strip() for m in re.finditer(r'(?m)^## .+$', text)]
+
+
 def parse_index() -> list[IPEntry]:
     """INDEX.md에서 모든 IP 항목 파싱"""
     if not INDEX_MD.exists():
@@ -109,15 +114,19 @@ def parse_index() -> list[IPEntry]:
 
     text = INDEX_MD.read_text(encoding='utf-8')
     entries: list[IPEntry] = []
-    service_map = {
-        '## 서비스A IP 목록': 'svc_a',
-        '## 기프티콘 IP 목록': 'gifticon',
-        '## 서비스C IP 목록': 'svc_c',
-        '## 피벗으로 추가 확보한 IP': 'pivot',
-        '## @GO174 역피벗으로 추가 확보한 IP': 'pivot',
-    }
+    section_services = [
+        ('## 서비스A IP 목록', 'svc_a'),
+        ('## 기프티콘 IP 목록', 'gifticon'),
+        ('## 서비스C IP 목록', 'svc_c'),
+        ('## 피벗으로 추가 확보한 IP', 'pivot'),
+    ]
+    section_services.extend(
+        (header, 'pivot')
+        for header in _section_headers(text)
+        if '역피벗' in header and 'Cluster#3' in header
+    )
 
-    for section_header, service in service_map.items():
+    for section_header, service in section_services:
         rows = parse_md_table_rows(text, section_header)
         for cells in rows:
             if len(cells) < 2:
@@ -150,8 +159,8 @@ def parse_index() -> list[IPEntry]:
     return entries
 
 
-def parse_seed_ips() -> list[IPEntry]:
-    """seed_ips.md에서 seed IP 항목만 파싱"""
+def parse_seed_ips(include_pos: bool = False) -> list[IPEntry]:
+    """seed_ips.md에서 seed IP 항목 파싱. POS 오탐 검증용은 기본 제외."""
     if not SEED_IPS.exists():
         return []
 
@@ -162,6 +171,8 @@ def parse_seed_ips() -> list[IPEntry]:
         '## 서비스C IP 차단 내역': 'svc_c',
         '## 기프티콘 유입 IP': 'gifticon',
     }
+    if include_pos:
+        service_map['## 제휴사 POS IP 목록 (오탐 검증용)'] = 'pos'
 
     for section_header, service in service_map.items():
         rows = parse_md_table_rows(text, section_header)
@@ -199,7 +210,7 @@ def get_ips_by_status(status: str) -> list[IPEntry]:
 
 
 def get_unverified_ips(service: str | None = None) -> list[str]:
-    entries = parse_seed_ips()
+    entries = parse_seed_ips(include_pos=(service == 'pos'))
     result = []
     seen = set()
     for e in entries:

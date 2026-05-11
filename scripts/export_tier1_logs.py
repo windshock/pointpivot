@@ -3,10 +3,10 @@
 data/tier1_logs/*.json 을 도메인 단위 행으로 펼쳐 CSV로 출력 (피벗·필터용).
 
 사용법:
-    python scripts/export_tier1_logs.py -o data/tier1_export.csv
-    python scripts/export_tier1_logs.py --stats -o /tmp/t1.csv
-    python scripts/export_tier1_logs.py --tier2-columns -o data/tier1_export.csv
-    python scripts/export_tier1_logs.py path/to/one.json
+    .venv/bin/python scripts/export_tier1_logs.py -o data/tier1_export.csv
+    .venv/bin/python scripts/export_tier1_logs.py --stats -o /tmp/t1.csv
+    .venv/bin/python scripts/export_tier1_logs.py --tier2-columns -o data/tier1_export.csv
+    .venv/bin/python scripts/export_tier1_logs.py path/to/one.json
 
 per_domain이 비면 domain=_scan_ 요약 행 1줄(--no-scan-summary-row 로 끔).
 CSV에 source_json(원본 파일명) 포함. --tier2-columns 시 tier2_default 우선(utils와 suggest 정합);

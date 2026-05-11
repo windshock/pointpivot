@@ -4,8 +4,8 @@
 대량 실행 시 DDG·피해 사이트 부하 및 robots/이용약관을 준수할 것.
 
 사용법:
-    python scripts/pivot_loop.py 221.143.197.136 221.143.197.135
-    python scripts/pivot_loop.py --from-queue --limit 3
+    .venv/bin/python scripts/pivot_loop.py 221.143.197.136 221.143.197.135
+    .venv/bin/python scripts/pivot_loop.py --from-queue --limit 3
 """
 
 from __future__ import annotations

@@ -3,8 +3,8 @@
 create_video.py - PDF 슬라이드 + 음성 → MP4
 
 사용법:
-    python scripts/create_video.py
-    python scripts/create_video.py --output docs/output.mp4 --dpi 150
+    .venv/bin/python scripts/create_video.py
+    .venv/bin/python scripts/create_video.py --output docs/output.mp4 --dpi 150
 """
 import argparse
 import subprocess

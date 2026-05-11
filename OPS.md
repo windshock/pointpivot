@@ -14,8 +14,8 @@
 
 | 주기 | 작업 |
 |------|------|
-| **주 1회** | [STATUS.md](STATUS.md) 최우선 3~5건 처리, `python scripts/generate_reports.py` |
-| **월 1회** | `python scripts/stale_check.py` 로 재검증 후보 검토 (필요 시 `--auto`) |
+| **주 1회** | [STATUS.md](STATUS.md) 최우선 3~5건 처리, `.venv/bin/python scripts/generate_reports.py` |
+| **월 1회** | `.venv/bin/python scripts/stale_check.py` 로 재검증 후보 검토 (필요 시 `--auto`) |
 | **분기** | 블록리스트·클러스터 **lifecycle** 검토, RETIRED 처리, [anonymous-vps](https://github.com/windshock/anonymous-vps) 기여 여부 결정 |
 
 ## 3. 자동화 경계
@@ -28,6 +28,8 @@
 | izanaholdings **직접 본문**에서 추출한 작성자 IP | 동일 IP의 **법적·운영 차단** 요청 문구 |
 
 DuckDuckGo 스니펫에서 텔레그램 자동 대량 등록은 **끔** — 노이즈 방지 (기존 결정 유지).
+
+POS 제휴사 IP는 오탐 검증용 데이터이며 기본 배치에서 제외한다. 검증이 필요할 때만 `investigate_ip.py --batch --service pos`를 명시한다.
 
 ## 4. IP 수명 (TTL)
 
@@ -47,28 +49,31 @@ DuckDuckGo 스니펫에서 텔레그램 자동 대량 등록은 **끔** — 노�
 ## 7. 빠른 명령 모음
 
 ```bash
-python scripts/generate_reports.py
-python scripts/stale_check.py
-python scripts/investigate_ip.py 1.2.3.4
-python scripts/investigate_ip.py 1.2.3.4 --izana-list-pages 0
-python scripts/investigate_ip.py 1.2.3.4 --tier2-fraud-single --no-tier1-json
+.venv/bin/python -m pip install -r scripts/requirements.txt
+
+.venv/bin/python scripts/check_repo.py
+.venv/bin/python scripts/generate_reports.py
+.venv/bin/python scripts/stale_check.py
+.venv/bin/python scripts/investigate_ip.py 1.2.3.4
+.venv/bin/python scripts/investigate_ip.py 1.2.3.4 --izana-list-pages 0
+.venv/bin/python scripts/investigate_ip.py 1.2.3.4 --tier2-fraud-single --no-tier1-json
 # 원스톱: 조사 → tier1_export.csv(--tier2-columns) → suggest (티어2 임계값 공통)
-python scripts/run_investigate_pipeline.py 1.2.3.4
-python scripts/run_investigate_pipeline.py --no-export --no-suggest 1.2.3.4 --dry-run
-python scripts/run_investigate_pipeline.py --suggest-apply --tier2-fraud-single 1.2.3.4
-python scripts/run_investigate_pipeline.py --tier2-force-recompute 1.2.3.4
-python scripts/export_tier1_logs.py --tier2-columns --tier2-force-recompute -o data/tier1_export.csv
-python scripts/export_tier1_logs.py -o data/tier1_export.csv
-python scripts/export_tier1_logs.py --stats -o data/tier1_export.csv
-python scripts/suggest_tier2_from_tier1_logs.py
-python scripts/suggest_tier2_from_tier1_logs.py data/tier1_logs/2026-01-01_1_2_3_4.json
-python scripts/suggest_tier2_from_tier1_logs.py --apply --tier2-fraud-single
-python scripts/suggest_tier2_from_tier1_logs.py --force-recompute --apply
-python scripts/export_tier1_logs.py --tier2-columns -o data/tier1_export.csv
-python scripts/sort_tier2_queue.py
-python scripts/sort_tier2_queue.py --dry-run
-python scripts/report_tier2_queue_stale.py --days 7
-python scripts/report_tier2_queue_stale.py --count-only
-python scripts/investigate_ioc.py "@brrsim_77"
-python scripts/investigate_ip.py --batch --service svc_a --limit 5
+.venv/bin/python scripts/run_investigate_pipeline.py 1.2.3.4
+.venv/bin/python scripts/run_investigate_pipeline.py --no-export --no-suggest 1.2.3.4 --dry-run
+.venv/bin/python scripts/run_investigate_pipeline.py --suggest-apply --tier2-fraud-single 1.2.3.4
+.venv/bin/python scripts/run_investigate_pipeline.py --tier2-force-recompute 1.2.3.4
+.venv/bin/python scripts/export_tier1_logs.py --tier2-columns --tier2-force-recompute -o data/tier1_export.csv
+.venv/bin/python scripts/export_tier1_logs.py -o data/tier1_export.csv
+.venv/bin/python scripts/export_tier1_logs.py --stats -o data/tier1_export.csv
+.venv/bin/python scripts/suggest_tier2_from_tier1_logs.py
+.venv/bin/python scripts/suggest_tier2_from_tier1_logs.py data/tier1_logs/2026-01-01_1_2_3_4.json
+.venv/bin/python scripts/suggest_tier2_from_tier1_logs.py --apply --tier2-fraud-single
+.venv/bin/python scripts/suggest_tier2_from_tier1_logs.py --force-recompute --apply
+.venv/bin/python scripts/export_tier1_logs.py --tier2-columns -o data/tier1_export.csv
+.venv/bin/python scripts/sort_tier2_queue.py
+.venv/bin/python scripts/sort_tier2_queue.py --dry-run
+.venv/bin/python scripts/report_tier2_queue_stale.py --days 7
+.venv/bin/python scripts/report_tier2_queue_stale.py --count-only
+.venv/bin/python scripts/investigate_ioc.py "@brrsim_77"
+.venv/bin/python scripts/investigate_ip.py --batch --service svc_a --limit 5
 ```

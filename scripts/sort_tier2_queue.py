@@ -4,8 +4,8 @@ data/tier2_queue.md 테이블 데이터 행을 우선순위(내림차순)로 정
 헤더·설명 문단은 유지.
 
 사용법:
-    python scripts/sort_tier2_queue.py
-    python scripts/sort_tier2_queue.py --dry-run
+    .venv/bin/python scripts/sort_tier2_queue.py
+    .venv/bin/python scripts/sort_tier2_queue.py --dry-run
 """
 
 from __future__ import annotations

@@ -9,7 +9,7 @@ IOC 원본은 data/ioc_registry.md, IP 원본은 investigations/INDEX.md.
 STIX/CSV 표준 포맷 export는 미래 계획(충분한 DONE 확보 후).
 
 사용법:
-  python scripts/generate_reports.py
+  .venv/bin/python scripts/generate_reports.py
 """
 
 import argparse
@@ -30,20 +30,23 @@ REPORTS = ROOT / "reports"
 TODAY = date.today().isoformat()
 
 
-def write_summary():
-    path = REPORTS / 'summary.md'
+def build_summary() -> str:
     entries = parse_index()
     seed_entries = parse_seed_ips()
+    seed_entries_with_pos = parse_seed_ips(include_pos=True)
     sites = parse_spammed_sites()
     tg_iocs = parse_telegram_iocs()
     domain_iocs = parse_domain_iocs()
+
+    svc_label = {'svc_a': '서비스A', 'gifticon': '기프티콘', 'svc_c': '서비스C'}
+    svc_order = ('svc_a', 'gifticon', 'svc_c')
 
     # 진행률 집계
     by_service: dict[str, dict] = defaultdict(lambda: {'total': 0, 'done': 0, 'partial': 0})
     for e in seed_entries:
         for svc in e.service.split(','):
             svc = svc.strip()
-            if svc:
+            if svc in svc_order:
                 by_service[svc]['total'] += 1
                 if e.status == 'DONE':
                     by_service[svc]['done'] += 1
@@ -64,12 +67,9 @@ def write_summary():
             continue
         seen_seed_ips.add(e.ip)
         progress_entries.append(e)
-    total_unique = len(progress_entries)
-    done_unique = sum(1 for e in progress_entries if e.status == 'DONE')
-    partial_unique = sum(1 for e in progress_entries if e.status == 'PARTIAL')
+    unique_seed_total = len(progress_entries)
+    pos_count = sum(1 for e in seed_entries_with_pos if 'pos' in e.service.split(','))
 
-    svc_label = {'svc_a': '서비스A', 'gifticon': '기프티콘', 'svc_c': '서비스C'}
-    svc_order = ('svc_a', 'gifticon', 'svc_c')
     svc_rows = []
     for svc in svc_order:
         if svc not in by_service:
@@ -93,8 +93,18 @@ def write_summary():
     n_cluster3 = sum(1 for e in unique_entries if 'Cluster#3' in e.cluster)
     n_unclassified = sum(1 for e in unique_entries if e.cluster.strip() in ('-', '미분류', ''))
     total_tracked = len(unique_entries)
+    threat_services = set(svc_order)
+    tracked_seed_count = sum(
+        1 for e in unique_entries
+        if any(s in threat_services for s in e.service.split(','))
+    )
+    tracked_pivot_count = sum(
+        1 for e in unique_entries
+        if 'pivot' in e.service.split(',')
+        and not any(s in threat_services for s in e.service.split(','))
+    )
 
-    content = f"""# PointPivot 현황 요약 (Summary)
+    return f"""# PointPivot 현황 요약 (Summary)
 
 > 자동 생성: {TODAY}
 
@@ -108,6 +118,8 @@ def write_summary():
 
 > **1차 스캔 커버리지** = DONE + PARTIAL (DDG 검색·초안 보고서까지 완료된 비율).  
 > **확정률 (DONE)** = {progress_done}/{progress_total} ({round(progress_done/progress_total*100) if progress_total else 0}%) — 직접 게시 증거 또는 복수 출처로 확인 완료.
+> 서비스별 합계는 중복 IP를 서비스마다 계산하며, 위협 seed unique 기준은 {unique_seed_total}개.
+> **제휴사 POS 오탐 검증용 {pos_count}개**는 위협 seed 진행률에서 제외.
 
 ---
 
@@ -119,7 +131,7 @@ def write_summary():
 | Cluster#2 | 🟡 부분 확인 | {n_cluster2} | @YY77882 (불법 의약품 자동화, Vultr VPS) |
 | Cluster#3 | 🟡 부분 확인 | {n_cluster3} | @GO174 (먹튀/도박/통장협박 스팸, KT 118.235.x.x) |
 | 미분류 | 추가 조사 필요 | {n_unclassified} | 기프티콘 KR_RESIDENTIAL 등 — 클러스터 미배정 |
-| **전체** | | **{total_tracked}** | seed {progress_total} + 피벗 {total_tracked - progress_total} |
+| **전체** | | **{total_tracked}** | 위협 seed {tracked_seed_count}개(unique) + 피벗 {tracked_pivot_count}개(unique) |
 
 ---
 
@@ -148,6 +160,11 @@ def write_summary():
 
 → [`STATUS.md`](../STATUS.md) 참조
 """
+
+
+def write_summary():
+    path = REPORTS / 'summary.md'
+    content = build_summary()
     path.write_text(content, encoding='utf-8')
     print(f'  summary.md 생성 완료')
 
