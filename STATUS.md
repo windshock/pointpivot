@@ -91,6 +91,12 @@
 - **최근 확인:** 2026-05-11 최근-window 점검에서 `chunggong.or.kr` 상세 페이지 `article:published_time=2026-05-06T14:59:52+09:00`와 `@abab1768` 선불유심/내구제 문구 확인. 작성자 IP 미노출 → 신규 IP IOC 없음. 보고서: `reports/recent_window_orgs_2026-05-04_2026-05-11.md`
 - **상세:** `data/campaigns.md` 참조
 
+### 신규 후보 — USIM/loan spam lead
+- **상태:** PARTIAL 후보. 기존 Cluster#1과 같은 업종/게시판 스팸 패턴이나, 현재는 공유 IP·공유 핸들 근거가 없어 별도 신규 후보로 둔다.
+- **핵심 IOC:** @holysim, @rnfma9, @sk11400, `holysim.isweb.co.kr`, `rnfma9rnfma9.isweb.co.kr`
+- **최근 확인:** 2026-05-11 행위 키워드 신규 발굴에서 `tvo.kr`(2026-05-08~2026-05-11), `dgcaa.or.kr`(2026-05-07) 상세 페이지 메타데이터와 원문 핸들/키워드 직접 확인. 작성자 IP 미노출 → 신규 IP IOC 없음.
+- **보고서:** `reports/new_leads_2026-05-11.md`
+
 ---
 
 ## 다음에 해야 할 작업 (Priority Queue)

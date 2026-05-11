@@ -17,6 +17,8 @@
 | 부산대 채널PNU | channelpnu.pusan.ac.kr | 대학 | 221.143.197.136 | seed IP 직접 | @brrsim_77, 약물스팸(@krfa8) | 약물 스팸도 포함 | ddg_site |
 | haccpkoreamall | haccpkoreamall.com | 쇼핑몰 | 221.143.197.136 | seed IP 직접 | @the_usim 라부부통신 | | ddg_site |
 | 청소년 공연예술축제 | chunggong.or.kr | 공공기관 | - | @brrsim_77 / @abab1768 피벗 | @brrsim_77, @abab1768 | 2026-05-06 상세 페이지 메타데이터로 @abab1768 최근 게시 확인. 작성자 IP 미노출 | ddg_site |
+| 테헤란밸리 오케스트라 | tvo.kr | 커뮤니티/단체 | - | 행위 키워드 신규 발굴 | @holysim, @rnfma9, @sk11400 | 2026-05-08~2026-05-11 상세 페이지 메타데이터로 최근 게시 확인. 작성자 IP 미노출. 신규 후보(USIM/loan) | ddg_site |
+| 대구경북서예가협회 | dgcaa.or.kr | 협회 게시판 | - | 행위 키워드 신규 발굴 | @holysim | 2026-05-07 상세 페이지 메타데이터로 최근 게시 확인. 작성자 IP 미노출. 신규 후보(USIM/loan) | ddg_site |
 | DBpia 커뮤니티 | community.dbpia.co.kr | 학술 | - | @brrsim_77 피벗 | @brrsim_77 | | ddg_site |
 | 선도산림경영단지 | sundofm.or.kr | 공공기관 | - | @abab1768 피벗 | @abab1768 | | ddg_site |
 | 루마니아 한인회 | homepy.korean.net | 재외동포 | - | @brrsim_77 피벗 | @brrsim_77 | | ddg_site |

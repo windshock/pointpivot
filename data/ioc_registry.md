@@ -32,6 +32,9 @@
 | @YY77882 | - | 141.164.36.87, 158.247.239.223 | 2026-04-09 | PARTIAL | Cluster#2 후보 | 불법 의약품/독극물 스팸. 졸피뎀·물뽕·펜토바르비탈·시안화칼륨 등. Cluster#1과 무관. |
 | @GO174 | - | 118.235.25.44 | 2026-04-13 | DONE | Cluster#3 | 먹튀/도박/통장협박/계좌매입 대규모 스팸. outoftrunk.com 등 다수 카페24 사이트. @Muo52S와 동일 인프라 공유. |
 | @Muo52S | - | 118.235.2.186, 118.235.12.181 | 2026-04-29 | DONE | Cluster#3 | 스포츠픽, 파워볼유출, 밸런스작업, 문서위조 광고. @GO174와 동일 인프라 공유. |
+| @holysim | holysim | - | 2026-05-11 | PARTIAL | 신규 후보(USIM/loan) | 행위 키워드 신규 발굴. `tvo.kr`와 `dgcaa.or.kr` 최근 게시글에서 선불유심내구제/급전 문구와 함께 직접 확인. 작성자 IP 미노출. |
+| @rnfma9 | 구름모바일 | - | 2026-05-11 | PARTIAL | 신규 후보(USIM/loan) | 행위 키워드 신규 발굴. `tvo.kr` 2026-05-08 상세글에서 선불유심내구제/급전 문구와 `rnfma9rnfma9.isweb.co.kr` 확인. 작성자 IP 미노출. |
+| @sk11400 | 산타모바일 | - | 2026-05-11 | PARTIAL | 신규 후보(USIM/loan) | 행위 키워드 신규 발굴. `tvo.kr` 2026-05-11 상세글에서 선불유심매입/내구제 문구와 함께 확인. 작성자 IP 미노출. |
 
 ---
 
@@ -43,6 +46,8 @@
 | abab1768.isweb.co.kr | 홍보 사이트 | @abab1768 | 2026-04-06 | UNVERIFIED | Cluster#1 | 곰돌이통신 |
 | abab1768abab1768.isweb.co.kr | 홍보 사이트 (변형) | @abab1768 | 2026-04-06 | PARTIAL | Cluster#1 | 곰돌이통신. matcl.com 게시글 본문에서 직접 URL로 홍보 확인(`http://www.matcl.com/freeboard/11429543`). 현재 다운(invalid response, 2026-04-09) |
 | labubu.isweb.co.kr | 홍보 사이트 | @the_usim | 2026-04-09 | UNVERIFIED | Cluster#1 | 라부부통신. matcl.com 스팸 스레드 스니펫에서 교차 언급 |
+| holysim.isweb.co.kr | 홍보 사이트 | @holysim | 2026-05-11 | PARTIAL | 신규 후보(USIM/loan) | `tvo.kr` 및 `dgcaa.or.kr` 최근 게시글에서 직접 URL로 확인. 직접 접근은 403 Forbidden. |
+| rnfma9rnfma9.isweb.co.kr | 홍보 사이트 | @rnfma9 | 2026-05-11 | PARTIAL | 신규 후보(USIM/loan) | `tvo.kr` 2026-05-08 상세글에서 직접 URL로 확인. 직접 접근은 403 Forbidden. |
 
 > 💡 isweb.co.kr: 무료 웹호스팅 — 스팸 사이트에 자주 악용됨
 
