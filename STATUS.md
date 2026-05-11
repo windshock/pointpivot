@@ -85,9 +85,10 @@
 ## 현재 식별된 클러스터
 
 ### Cluster #1 — 뽀로로/곰돌이/라부부 통신 네트워크
-- **상태:** 활성 (2025-12 ~ 2026-04)
+- **상태:** 활성 (2025-12 ~ 2026-05)
 - **핵심 인프라:** `221.143.197.x` seed 대역 + KT/SK Broadband residential 추가 IP 5개
 - **핵심 IOC:** @brrsim_77, @abab1768, @the_usim, kimyoojin18
+- **최근 확인:** 2026-05-11 최근-window 점검에서 `chunggong.or.kr` 상세 페이지 `article:published_time=2026-05-06T14:59:52+09:00`와 `@abab1768` 선불유심/내구제 문구 확인. 작성자 IP 미노출 → 신규 IP IOC 없음. 보고서: `reports/recent_window_orgs_2026-05-04_2026-05-11.md`
 - **상세:** `data/campaigns.md` 참조
 
 ---
