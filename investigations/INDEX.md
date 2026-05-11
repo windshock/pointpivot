@@ -21,7 +21,7 @@
 | 218.236.231.231 | PARTIAL | -            | -                                 | 2026-03-16 (snippet only) | 2026-05-11                    | [보고서](unclassified/218.236.231.231.md) |
 | 218.236.231.232 | PARTIAL | -            | -                                 | -          | -                             | [보고서](unclassified/218.236.231.232.md) |
 | 218.236.231.235 | PARTIAL | -            | -                                 | -          | -                             | [보고서](unclassified/218.236.231.235.md) |
-| 121.170.203.142 | PARTIAL | -            | KR_RESIDENTIAL (KT)               | 2026-05-08 (reputation) | 2026-05-11                    | [보고서](unclassified/121.170.203.142.md) |
+| 121.170.203.142 | PARTIAL | 성인약국/pharma spam 후보 | KR_RESIDENTIAL (KT)               | 2026-05-06 | 2026-05-11                    | [보고서](unclassified/121.170.203.142.md) |
 | 125.141.26.12   | PARTIAL | -            | -                                 | -          | -                             | [보고서](unclassified/125.141.26.12.md)   |
 
 

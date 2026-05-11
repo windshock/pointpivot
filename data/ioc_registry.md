@@ -49,6 +49,9 @@
 | holysim.isweb.co.kr | 홍보 사이트 | @holysim | 2026-05-11 | PARTIAL | 신규 후보(USIM/loan) | `tvo.kr` 및 `dgcaa.or.kr` 최근 게시글에서 직접 URL로 확인. 직접 접근은 403 Forbidden. |
 | rnfma9rnfma9.isweb.co.kr | 홍보 사이트 | @rnfma9 | 2026-05-11 | PARTIAL | 신규 후보(USIM/loan) | `tvo.kr` 2026-05-08 상세글에서 직접 URL로 확인. 직접 접근은 403 Forbidden. |
 | sk11400.isweb.co.kr | 홍보 사이트 | @sk11400 | 2026-05-11 | PARTIAL | 신규 후보(USIM/loan) | `m.maribel.co.kr` 2026-03-26 작성자 IP 노출 원문에서 직접 URL로 확인. |
+| puy24.com | 성인약국/pharma 홍보 URL | - | 2026-05-05 | PARTIAL | 성인약국/pharma spam 후보 | `moonyetimes.com` board1 3건에서 `121.170.203.142` 작성자 IP와 함께 반복 노출 |
+| hto78.com | 성인약국/pharma 홍보 URL | - | 2026-05-05 | PARTIAL | 성인약국/pharma spam 후보 | `moonyetimes.com` board1 3건에서 `121.170.203.142` 작성자 IP와 함께 반복 노출 |
+| kbb12.com | 성인약국/pharma 홍보 URL | - | 2026-05-05 | PARTIAL | 성인약국/pharma spam 후보 | `moonyetimes.com` board1 3건에서 `121.170.203.142` 작성자 IP와 함께 반복 노출 |
 
 > 💡 isweb.co.kr: 무료 웹호스팅 — 스팸 사이트에 자주 악용됨
 

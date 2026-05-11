@@ -96,8 +96,14 @@
 - **핵심 IOC:** @holysim, @rnfma9, @sk11400, `holysim.isweb.co.kr`, `rnfma9rnfma9.isweb.co.kr`
 - **최근 확인:** 2026-05-11 행위 키워드 신규 발굴에서 `tvo.kr`(2026-05-08~2026-05-11), `dgcaa.or.kr`(2026-05-07) 상세 페이지 메타데이터와 원문 핸들/키워드 직접 확인.
 - **작성자 IP:** 사용자 제공 Cafe24 모바일 게시판 원문에서 `@rnfma9` 작성자 IP `121.170.203.144`, `@sk11400` 작성자 IP `168.126.234.232` 확인. `121.170.203.144`는 기존 seed `121.170.203.142`와 같은 /24라 추가 확인 가치가 있음. DCinside 결과의 `211.201`은 부분 IP, `104.28.164.10`은 CDN/페이지 자산 값으로 보여 등록하지 않음.
-- **PARTIAL 재검증:** 2026-05-11 `PARTIAL` 75개 exact-IP 검색 triage에서 `121.170.203.142`는 CleanTalk recent spam reputation(`last activity=2026-05-08`)만 확인됐고, `@rnfma9`/USIM 직접 원문은 미확보. `218.236.231.231`은 삭제된 `dongponews` 스니펫에 `@brrsim_77`가 보이나 원문이 없어 `search_snippet_only`로 유지. 보고서: `reports/partial_revalidation_2026-05-11.md`
+- **PARTIAL 재검증:** 2026-05-11 `PARTIAL` 75개 exact-IP 검색 triage 후 사용자 제공 `moonyetimes.com` 원문 3건에서 `121.170.203.142` 직접 작성자 IP를 확인했다. 다만 내용은 `puy24.com`/`hto78.com`/`kbb12.com` 성인약국/pharma 스팸이라 USIM/loan 후보와 동일 귀속하지 않는다. `218.236.231.231`은 삭제된 `dongponews` 스니펫에 `@brrsim_77`가 보이나 원문이 없어 `search_snippet_only`로 유지. 보고서: `reports/partial_revalidation_2026-05-11.md`, `reports/moonyetimes_pharma_2026-05-11.md`
 - **보고서:** `reports/new_leads_2026-05-11.md`
+
+### 신규 후보 — 성인약국/pharma spam
+- **상태:** PARTIAL 후보, 신뢰도 MEDIUM.
+- **핵심 IP/IOC:** `121.170.203.142`, `puy24.com`, `hto78.com`, `kbb12.com`.
+- **최근 확인:** 2026-05-11 사용자 제공 `moonyetimes.com` board1 원문 3건(`idx=15434`, `15554`, `16554`)에서 2026-05-05~2026-05-06 게시글의 작성자 IP `121.170.203.142`와 성인약국/pharma 스팸 본문 직접 확인.
+- **주의:** 같은 `/24`의 `121.170.203.144`는 `@rnfma9` USIM/loan 후보이나, 공유 IOC가 없어 현재는 별도 후보로 둔다.
 
 ---
 
