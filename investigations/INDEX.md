@@ -93,7 +93,7 @@
 | 64.176.224.115  | PARTIAL | Cluster#2 후보 | VPS_GLOBAL (Vultr)      | -          | -             | [보고서](unclassified/64.176.224.115.md)  |
 | 64.176.228.120  | PARTIAL | Cluster#2 후보 | VPS_GLOBAL (Vultr)      | -          | -             | [보고서](unclassified/64.176.228.120.md)  |
 | 211.255.155.246 | PARTIAL | -            | 미확인                     | -          | -             | [보고서](unclassified/211.255.155.246.md) |
-| 118.235.25.44   | PARTIAL | Cluster#3 추정 | KR_RESIDENTIAL (KT, 성남) | 2025-10-10 | 2026-04-13    | [보고서](unclassified/118.235.25.44.md)   |
+| 118.235.25.44   | DONE    | Cluster#3      | KR_RESIDENTIAL (KT, 성남) | 2025-10-10 | 2026-04-29    | [보고서](cluster3/118.235.25.44.md)     |
 
 
 ---
@@ -113,14 +113,15 @@
 | 121.159.134.27 | PARTIAL | Cluster#1 추정 | KR_RESIDENTIAL (추정) | -          | -             | [보고서](cluster1/121.159.134.27.md) |
 
 
-## @GO174 역피벗으로 추가 확보한 IP (Cluster#3 추정)
+## @GO174 / @Muo52S 역피벗으로 추가 확보한 IP (Cluster#3)
 
-> 118.235.25.44 서비스C seed에서 @GO174 역피벗으로 발견. outoftrunk.com Google 스니펫 기반.
+> KT 118.235.x.x 대역 @GO174 캠페인 역피벗으로 발견. outoftrunk.com 등 카페24 사이트 기반.
 
 
 | IP             | 상태      | 클러스터         | 인프라                 | last_seen  | last_verified | 조사 파일                                 |
 | -------------- | ------- | ------------ | ------------------- | ---------- | ------------- | ------------------------------------- |
-| 118.235.12.181 | PARTIAL | Cluster#3 추정 | KR_MOBILE (KT)      | 2025-11-19 | 2026-04-13    | [보고서](unclassified/118.235.12.181.md) |
+| 118.235.12.181 | DONE    | Cluster#3      | KR_MOBILE (KT)      | 2026-04-29 | 2026-04-29    | [보고서](cluster3/118.235.12.181.md) |
+| 118.235.2.186  | DONE    | Cluster#3      | KR_RESIDENTIAL (KT) | 2026-04-29 | 2026-04-29    | [보고서](cluster3/118.235.2.186.md)  |
 | 118.235.3.169  | PARTIAL | Cluster#3 추정 | KR_MOBILE (KT)      | 2025-11    | 2026-04-13    | -                                     |
 | 118.235.74.186 | PARTIAL | Cluster#3 추정 | KR_RESIDENTIAL (KT) | 2025-11-16 | 2026-04-13    | -                                     |
 | 118.235.6.158  | PARTIAL | Cluster#3 추정 | KR_RESIDENTIAL (KT) | 2025-11-16 | 2026-04-13    | -                                     |
@@ -143,6 +144,6 @@
 | --------- | --------------- | ------------------------------------- |
 | Cluster#1 | `cluster1/`     | 뽀로로/곰돌이/라부부 통신 네트워크 (seed + 직접 피벗 IP) |
 | Cluster#2 | `cluster2/`     | @YY77882 불법 의약품 자동화 인프라 (Vultr VPS)   |
-| Cluster#3 | `unclassified/` | @GO174 먹튀/도박/통장협박 스팸 (KT 118.235.x.x) |
+| Cluster#3 | `cluster3/`     | @GO174 / @Muo52S 금융사기·도박·위조 스팸 (KT 118.235.x.x) |
 | 미분류       | `unclassified/` | 기프티콘 KR_RESIDENTIAL 등 클러스터 미배정 IP     |
 

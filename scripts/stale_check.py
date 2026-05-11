@@ -4,8 +4,8 @@ INDEX의 DONE IP 및 조사 보고서의 last_verified 기준 재검증 후보 �
 `--auto`는 investigate_ip.py를 다시 호출(네트워크 필요).
 
 사용법:
-    python scripts/stale_check.py
-    python scripts/stale_check.py --auto --limit 3
+    .venv/bin/python scripts/stale_check.py
+    .venv/bin/python scripts/stale_check.py --auto --limit 3
 """
 
 from __future__ import annotations
@@ -31,7 +31,7 @@ def main():
     args = p.parse_args()
 
     today = date.today()
-    candidates: list[tuple[str, str, int]] = []
+    candidates: list[tuple[str, str, int, str]] = []
 
     for e in parse_index():
         if e.status != 'DONE':
@@ -40,21 +40,21 @@ def main():
         lv = lc.get('last_verified')
         ttl = lc.get('ttl_days') or default_ttl_days_for_infra(e.infra)
         if lv is None:
-            candidates.append((e.ip, e.report_path, 9999))
+            candidates.append((e.ip, e.report_path, 9999, 'last_verified 미기재'))
             continue
         half = max(ttl // 2, 14)
         if lv + timedelta(days=half) < today:
             days_ago = (today - lv).days
-            candidates.append((e.ip, e.report_path, days_ago))
+            candidates.append((e.ip, e.report_path, days_ago, f'{days_ago}일 경과, TTL/2={half}일'))
 
     candidates.sort(key=lambda x: -x[2])
     print(f'재검증 후보 (DONE, last_verified+TTL/2 경과 또는 미기재): {len(candidates)}건\n')
-    for ip, rp, d in candidates[: args.limit]:
-        print(f'  {ip}  (보고서: {rp}, 우선순위점수: {d})')
+    for ip, rp, d, reason in candidates[: args.limit]:
+        print(f'  {ip}  (보고서: {rp}, 우선순위점수: {d}, 사유: {reason})')
 
     if args.auto and candidates:
         root = Path(__file__).parent.parent
-        for ip, _, _ in candidates[: args.limit]:
+        for ip, _, _, _ in candidates[: args.limit]:
             print(f'\n[auto] investigate_ip.py {ip}')
             subprocess.run(
                 [sys.executable, str(root / 'scripts' / 'investigate_ip.py'), ip],

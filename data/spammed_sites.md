@@ -32,6 +32,11 @@
 | 연안김씨뉴스 | yeonkimnews.or.kr | 종친회 | 221.143.197.135 | seed IP 직접 | @brrsim_77 | 첨부파일 포함 | ddg_site |
 | 울진21 | uljin21.com | 지역커뮤니티 | 221.143.197.135 | seed IP 직접 | (삭제됨) | 관리자 삭제 | ddg_site |
 | 맛클(유저 포럼·자유게시판 등) | www.matcl.com | IT/커뮤니티 | - | @abab1768, @the_usim 피벗 | 곰돌이통신·라부부통신, `abab1768.isweb.co.kr`, `labubu.isweb.co.kr` 유도 | DDG 색인 다수 스레드(예: `/forum/…`, `/freeboard/…`). 작성자 IP 미확인 | ddg_site |
+| OUT OF TRUNK | outoftrunk.com | 카페24 쇼핑몰 | 118.235.25.44 외 12개 | @GO174 역피벗 | 먹튀/도박/통장협박/계좌매입/충전계좌/핑돈 | **작성자 IP 노출** ⭐ `ip:X.X.X.X` 형태. 원본 삭제, Google 스니펫 기반. Cluster#3 | - |
+| 토종홍삼원 | tojonghongsam.com | 카페24 쇼핑몰 | - | @GO174 피벗 | 계좌묶기/피해복구 사칭 | 작성자 IP 노출 추정. Cloudflare 차단. Cluster#3 | - |
+| 펫루트 | petroute.co.kr | 카페24 쇼핑몰 | - | @GO174 피벗 | 핑돈/먹튀 | Cloudflare 차단. Cluster#3 | - |
+| (주)그린세이프티 | gs3m.co.kr | 카페24 쇼핑몰 | - | @GO174 피벗 | 충전계좌삽니다 | 작성자 IP 노출 추정. Cloudflare 차단. Cluster#3 | - |
+| 바움스하우스 | baumshouse.com | 카페24 쇼핑몰 | - | @GO174 피벗 | 충전계좌삽니다 | Cloudflare 차단. Cluster#3 | - |
 
 ---
 

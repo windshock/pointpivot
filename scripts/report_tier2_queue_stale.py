@@ -4,9 +4,9 @@ data/tier2_queue.md 8열 표에서 「추가일」이 N일 이전인 데이터 �
 처리 완료·재검증용 체크리스트로 쓰기 좋음.
 
 사용법:
-    python scripts/report_tier2_queue_stale.py
-    python scripts/report_tier2_queue_stale.py --days 14
-    python scripts/report_tier2_queue_stale.py --count-only
+    .venv/bin/python scripts/report_tier2_queue_stale.py
+    .venv/bin/python scripts/report_tier2_queue_stale.py --days 14
+    .venv/bin/python scripts/report_tier2_queue_stale.py --count-only
 """
 
 from __future__ import annotations

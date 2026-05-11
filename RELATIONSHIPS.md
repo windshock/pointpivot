@@ -27,6 +27,7 @@ anonymous-vps README의 **Conservative Promotion Rules**를 따른다:
 - **단일 IOC는 `/32` 유지**가 기본.
 - PointPivot 조사서에 **직접 게시·행위 근거 URL/날짜**가 있어야 한다 (스니펫만으로는 부족).
 - 운영 차단 영향이 크면 **provider 전체 차단이 아닌** incident IOC·high-risk CIDR 정책을 따른다.
+- **정상적인 제휴사 IP(POS, 결제, 카페 등)나 공용 인프라가 아닌지 사전에 확인**하며, 검색 결과의 단순 연관성만으로는 악성으로 승격하지 않는다 (Anti-Hallucination).
 
 ## PointPivot 내부 환류
 

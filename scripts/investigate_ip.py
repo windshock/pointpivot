@@ -3,13 +3,13 @@
 investigate_ip.py - DuckDuckGo + 다중 사이트 스크래핑(izanaholdings + DDG site:) 기반 IP 자동 조사
 
 사용법:
-    python scripts/investigate_ip.py 221.143.197.13
-    python scripts/investigate_ip.py 221.143.197.13 --izana-list-pages 0   # 이자나 목록 생략(얕게)
-    python scripts/investigate_ip.py 221.143.197.13 --ddg-site-limit 8    # 피해 사이트 DDG 8도메인만
+    .venv/bin/python scripts/investigate_ip.py 221.143.197.13
+    .venv/bin/python scripts/investigate_ip.py 221.143.197.13 --izana-list-pages 0   # 이자나 목록 생략(얕게)
+    .venv/bin/python scripts/investigate_ip.py 221.143.197.13 --ddg-site-limit 8    # 피해 사이트 DDG 8도메인만
     # 티어1 JSON: data/tier1_logs/  티어2 큐: data/tier2_queue.md (--no-tier1-json / --no-tier2-queue)
     # 소급: scripts/suggest_tier2_from_tier1_logs.py [--apply]  |  원스톱: run_investigate_pipeline.py
-    python scripts/investigate_ip.py --batch --limit 5
-    python scripts/investigate_ip.py --batch --service svc_a --limit 3
+    .venv/bin/python scripts/investigate_ip.py --batch --limit 5
+    .venv/bin/python scripts/investigate_ip.py --batch --service svc_a --limit 3
 """
 
 from __future__ import annotations
@@ -18,19 +18,11 @@ import argparse
 import sys
 import time
 import warnings
+from collections import Counter
 from datetime import date
 from pathlib import Path
 
 warnings.filterwarnings('ignore')
-
-try:
-    from ddgs import DDGS
-except ImportError:
-    try:
-        from duckduckgo_search import DDGS
-    except ImportError:
-        print('필요 패키지 없음: pip install ddgs')
-        sys.exit(1)
 
 sys.path.insert(0, str(Path(__file__).parent))
 from scrapers.generic_ddg import FRAUD_KEYWORDS as DDG_FRAUD_KW
@@ -41,6 +33,7 @@ from scrapers.izanaholdings import (
     scrape_izanaholdings,
 )
 from scrapers.generic_ddg import scrape_spam_sites_keywords_via_ddg
+from search_providers import SearchProviderError, create_search_provider
 from utils import (
     INVESTIGATIONS,
     ROOT,
@@ -56,15 +49,31 @@ from utils import (
 )
 
 UNCLASSIFIED = INVESTIGATIONS / 'unclassified'
+_SEARCH_PROVIDER = None
 
 
 def search(query: str, max_results: int = 20) -> list[dict]:
+    provider = get_search_provider()
     try:
-        with DDGS() as ddgs:
-            return list(ddgs.text(query, max_results=max_results))
-    except Exception as e:
-        print(f'  [DDG 오류] {query!r}: {e}')
+        return provider.search(query, max_results=max_results)
+    except SearchProviderError as e:
+        print(f'  [{provider.mode} 검색 오류] {query!r}: {e}')
         return []
+
+
+def get_search_provider():
+    global _SEARCH_PROVIDER
+    if _SEARCH_PROVIDER is None:
+        _SEARCH_PROVIDER = create_search_provider()
+    return _SEARCH_PROVIDER
+
+
+def search_context() -> dict:
+    provider = get_search_provider()
+    return {
+        'search_provider': provider.name,
+        'search_mode': provider.mode,
+    }
 
 
 def build_queries(ip: str) -> list[tuple[str, str]]:
@@ -72,6 +81,19 @@ def build_queries(ip: str) -> list[tuple[str, str]]:
         (f'"{ip}"', 'exact'),
         (f'"{ip}" 내구제 OR 유심 OR 기프티콘 OR 텔레그램', 'fraud'),
     ]
+
+
+def _result_log_entry(result: dict) -> dict:
+    return {
+        'title': (result.get('title') or '')[:200],
+        'href': (result.get('href') or '')[:200],
+        'body': (result.get('body') or '')[:300],
+        'provider': result.get('provider', ''),
+        'engine': result.get('engine', ''),
+        'query': result.get('query', ''),
+        'fetched_at': result.get('fetched_at', ''),
+        'evidence_level': result.get('evidence_level', 'search_snippet_only'),
+    }
 
 
 def build_tier1_json_payload(
@@ -114,14 +136,30 @@ def build_tier1_json_payload(
             'fraud_single': tier2_fraud_single,
         }
 
+    provider_counts: Counter[str] = Counter()
+    provider_counts.update(
+        (r.get('provider') or 'unknown')
+        for r in data.get('results', [])
+    )
+    for per_domain in ddg.get('per_domain') or []:
+        provider_counts.update(
+            (r.get('provider') or 'unknown')
+            for r in per_domain.get('sample_results') or []
+        )
+
     payload = {
         'schema_version': 1,
         'ip': ip,
+        'search_provider': data.get('search_provider'),
+        'search_mode': data.get('search_mode'),
+        'search_provider_counts': dict(provider_counts),
+        'results': [_result_log_entry(r) for r in data.get('results', [])[:20]],
         'ddg_site': {
             'domains_checked': ddg.get('domains_checked'),
             'hits': ddg.get('hits'),
             'keywords': ddg.get('keywords'),
             'per_domain': ddg.get('per_domain'),
+            'provider_counts': ddg.get('provider_counts'),
         },
         'izana_direct_posts': len(data.get('izana', {}).get('posts', [])),
         'confidence': data.get('confidence'),
@@ -148,13 +186,14 @@ def investigate(
 ) -> dict:
     print(f"\n{'='*60}")
     print(f'  조사 대상: {ip}')
+    print(f"  검색 provider: {search_context()['search_mode']}")
     print(f"{'='*60}")
 
     all_results: list[dict] = []
     all_iocs: dict = {'telegram': set(), 'isweb': set(), 'keywords': set()}
 
     for query, label in build_queries(ip):
-        print(f'  [DDG:{label}] {query}')
+        print(f"  [검색:{search_context()['search_mode']}:{label}] {query}")
         results = search(query)
         print(f'           결과 {len(results)}건')
         all_results.extend(results)
@@ -210,6 +249,7 @@ def investigate(
         'has_spam': bool(has_keywords or has_telegram),
         'direct_post': direct_post,
         'confidence': confidence,
+        **search_context(),
     }
 
 
@@ -256,20 +296,21 @@ def generate_report(data: dict) -> str:
     status = 'DONE' if izana_posts else ('PARTIAL' if results else 'UNVERIFIED')
 
     sources = []
+    search_label = data.get('search_mode') or data.get('search_provider') or 'ddg'
     if results:
-        sources.append(f'DuckDuckGo {len(results)}건')
+        sources.append(f'검색({search_label}) {len(results)}건')
     if izana_posts:
         sources.append(f'izanaholdings 직접 {len(izana_posts)}건')
     doms = ddg_site_kw.get('domains_checked') or []
     if doms:
-        sources.append(f'피해사이트 DDG site: 검색 {len(doms)}개 도메인')
+        sources.append(f'피해사이트 provider site: 검색 {len(doms)}개 도메인')
 
     ddg_note = ''
     if doms_chk := ddg_site_kw.get('domains_checked'):
         hmap = ddg_site_kw.get('hits') or {}
         wh = [f'{d}({hmap[d]})' for d in doms_chk if hmap.get(d)]
         ddg_note = (
-            f'\n**피해 사이트 DDG 요약 (`spammed_sites.md` ddg_site):** '
+            f'\n**피해 사이트 검색 요약 (`spammed_sites.md` ddg_site):** '
             f'{len(doms_chk)}도메인 순회, 검색결과>0인 도메인 {len(wh)}개'
             + (f' — {", ".join(wh[:15])}' + (' …' if len(wh) > 15 else '') if wh else ' — (없음)')
             + '\n'
@@ -303,10 +344,10 @@ def generate_report(data: dict) -> str:
 
 ## 사용된 검색 방법
 
-- [x] DuckDuckGo: `"{ip}"`
-- [x] DuckDuckGo: `"{ip}" 내구제 OR 유심 OR 기프티콘 OR 텔레그램`
+- [x] 검색 provider `{search_label}`: `"{ip}"`
+- [x] 검색 provider `{search_label}`: `"{ip}" 내구제 OR 유심 OR 기프티콘 OR 텔레그램`
 - [x] izanaholdings.com 게시판 직접 검색
-- [x] `data/spammed_sites.md` 등록 도메인에 대한 `site:도메인 "{ip}"` DDG 검색 (키워드 힌트만)
+- [x] `data/spammed_sites.md` 등록 도메인에 대한 `site:도메인 "{ip}"` provider 검색 (키워드 힌트만)
 
 **수집 결과:** {', '.join(sources) if sources else '결과 없음'}
 {ddg_note}
@@ -324,7 +365,7 @@ def generate_report(data: dict) -> str:
 
 ---
 
-## DuckDuckGo 검색 결과 (상위 8건)
+## 검색 provider 결과 (상위 8건)
 
 | 제목 | URL | 스니펫 |
 |---|---|---|
@@ -358,9 +399,9 @@ def generate_report(data: dict) -> str:
 def main():
     parser = argparse.ArgumentParser(description='IP 자동 조사 스크립트')
     parser.add_argument('ip', nargs='?', help='조사할 IP 주소')
-    parser.add_argument('--batch', action='store_true', help='seed_ips.md에서 UNVERIFIED IP 배치 조사')
+    parser.add_argument('--batch', action='store_true', help='seed_ips.md에서 UNVERIFIED IP 배치 조사 (POS 오탐 검증용은 기본 제외)')
     parser.add_argument('--limit', type=int, default=5, help='배치 최대 처리 수 (기본: 5)')
-    parser.add_argument('--service', choices=['svc_a', 'gifticon', 'svc_c'], help='특정 서비스만 처리')
+    parser.add_argument('--service', choices=['svc_a', 'gifticon', 'svc_c', 'pos'], help='특정 서비스만 처리 (pos 지정 시에만 POS 오탐 검증용 포함)')
     parser.add_argument('--dry-run', action='store_true', help='파일 저장 없이 출력만')
     parser.add_argument(
         '--ddg-site-limit',
@@ -530,7 +571,7 @@ def run_single(
             print(f'  INDEX.md 업데이트: {ip} → PARTIAL')
 
     print(f'\n  결과 요약:')
-    print(f"    검색 결과: {len(data['results'])}건 (DDG) + izana {len(izana.get('posts', []))}건")
+    print(f"    검색 결과: {len(data['results'])}건 ({data.get('search_mode')}) + izana {len(izana.get('posts', []))}건")
     print(f"    텔레그램:  {iocs['telegram'] or '없음'}")
     print(f"    도메인:    {iocs['isweb'] or '없음'}")
     print(f"    키워드:    {iocs['keywords'] or '없음'}")

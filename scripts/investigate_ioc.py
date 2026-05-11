@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """
 IOC → IP 역방향 피벗 (텔레그램 핸들, 닉네임 등).
-DuckDuckGo 검색으로 스니펫·URL에서 IPv4를 추출하고 pivot_queue에 적재.
+검색 provider로 스니펫·URL에서 IPv4를 추출하고 pivot_queue에 적재.
 (izanaholdings는 IP 기반 스크래퍼만 있음 — 핸들 전용 직접 스크래핑은 브라우저 조사로 보완.)
 
 사용법:
-    python scripts/investigate_ioc.py "@brrsim_77"
-    python scripts/investigate_ioc.py kimyoojin18 --nick
+    .venv/bin/python scripts/investigate_ioc.py "@brrsim_77"
+    .venv/bin/python scripts/investigate_ioc.py kimyoojin18 --nick
 """
 
 from __future__ import annotations
@@ -19,29 +19,29 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 
-try:
-    from ddgs import DDGS
-except ImportError:
-    try:
-        from duckduckgo_search import DDGS
-    except ImportError:
-        print('필요 패키지 없음: pip install ddgs')
-        sys.exit(1)
-
+from search_providers import SearchProviderError, create_search_provider
 from utils import append_pivot_queue
 
 IP_RE = re.compile(
     r'\b(?:(?:25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(?:25[0-5]|2[0-4]\d|[01]?\d\d?)\b'
 )
+_SEARCH_PROVIDER = None
 
 
 def search(q: str, max_results: int = 25) -> list[dict]:
+    provider = get_search_provider()
     try:
-        with DDGS() as ddgs:
-            return list(ddgs.text(q, max_results=max_results))
-    except Exception as e:
-        print(f'[DDG 오류] {q!r}: {e}')
+        return provider.search(q, max_results=max_results)
+    except SearchProviderError as e:
+        print(f'[{provider.mode} 검색 오류] {q!r}: {e}')
         return []
+
+
+def get_search_provider():
+    global _SEARCH_PROVIDER
+    if _SEARCH_PROVIDER is None:
+        _SEARCH_PROVIDER = create_search_provider()
+    return _SEARCH_PROVIDER
 
 
 def extract_ips_from_results(results: list[dict]) -> set[str]:
@@ -54,7 +54,7 @@ def extract_ips_from_results(results: list[dict]) -> set[str]:
 
 
 def main():
-    p = argparse.ArgumentParser(description='IOC 역방향 피벗 (DDG)')
+    p = argparse.ArgumentParser(description='IOC 역방향 피벗 (search provider)')
     p.add_argument('ioc', help='텔레그램 @핸들 또는 문자열')
     p.add_argument('--nick', action='store_true', help='닉네임 검색어로 처리')
     args = p.parse_args()
@@ -70,8 +70,9 @@ def main():
         queries.append(f'"{h}" 선불유심 OR 내구제 OR 유심')
 
     all_ips: set[str] = set()
+    provider = get_search_provider()
     for q in queries:
-        print(f'[DDG] {q}')
+        print(f'[{provider.mode}] {q}')
         res = search(q)
         ips = extract_ips_from_results(res)
         print(f'      결과 {len(res)}건, IP 후보 {len(ips)}개')

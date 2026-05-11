@@ -7,11 +7,11 @@ data/tier1_logs/*.json 을 읽어 티어2 트리거에 해당하는 IP를 나열
 종료 시 stderr에 후보 수와 임베드/재계산 건수를 요약한다.
 
 사용법:
-    python scripts/suggest_tier2_from_tier1_logs.py
-    python scripts/suggest_tier2_from_tier1_logs.py --apply
-    python scripts/suggest_tier2_from_tier1_logs.py --tier2-min-hit-domains 1 --tier2-fraud-single
-    python scripts/suggest_tier2_from_tier1_logs.py --force-recompute   # tier2_default 무시
-    python scripts/suggest_tier2_from_tier1_logs.py path/to/a.json path/to/b.json
+    .venv/bin/python scripts/suggest_tier2_from_tier1_logs.py
+    .venv/bin/python scripts/suggest_tier2_from_tier1_logs.py --apply
+    .venv/bin/python scripts/suggest_tier2_from_tier1_logs.py --tier2-min-hit-domains 1 --tier2-fraud-single
+    .venv/bin/python scripts/suggest_tier2_from_tier1_logs.py --force-recompute   # tier2_default 무시
+    .venv/bin/python scripts/suggest_tier2_from_tier1_logs.py path/to/a.json path/to/b.json
 """
 
 from __future__ import annotations
