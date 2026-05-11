@@ -74,6 +74,7 @@ POS 제휴사 IP는 오탐 검증용 데이터이며 기본 배치에서 제외�
 .venv/bin/python scripts/sort_tier2_queue.py --dry-run
 .venv/bin/python scripts/report_tier2_queue_stale.py --days 7
 .venv/bin/python scripts/report_tier2_queue_stale.py --count-only
+.venv/bin/python scripts/recent_window_check.py --today 2026-05-11
 .venv/bin/python scripts/investigate_ioc.py "@brrsim_77"
 .venv/bin/python scripts/investigate_ip.py --batch --service svc_a --limit 5
 ```
