@@ -24,7 +24,9 @@ from utils import parse_seed_ips  # noqa: E402
 CHECK_PATHS = [
     '.gitignore',
     'README.md',
+    'METHODOLOGY.md',
     'OPS.md',
+    'config',
     'investigations/TEMPLATE.md',
     'data/seed_ips.md',
     'data/tier2_queue.md',

@@ -33,6 +33,7 @@ from scrapers.izanaholdings import (
     scrape_izanaholdings,
 )
 from scrapers.generic_ddg import scrape_spam_sites_keywords_via_ddg
+from proxy_collectors import proxy_provenance_from_env
 from search_providers import SearchProviderError, create_search_provider
 from utils import (
     INVESTIGATIONS,
@@ -70,10 +71,16 @@ def get_search_provider():
 
 def search_context() -> dict:
     provider = get_search_provider()
-    return {
+    context = {
         'search_provider': provider.name,
         'search_mode': provider.mode,
     }
+    context.update(proxy_context())
+    return context
+
+
+def proxy_context() -> dict:
+    return proxy_provenance_from_env()
 
 
 def build_queries(ip: str) -> list[tuple[str, str]]:
@@ -166,6 +173,14 @@ def build_tier1_json_payload(
         'direct_post': data.get('direct_post'),
         'tier2_default': tier2_default,
     }
+    for key in (
+        'proxy_mode',
+        'proxy_source',
+        'proxy_inventory_generated_at',
+        'proxy_count',
+    ):
+        if data.get(key) not in (None, ''):
+            payload[key] = data.get(key)
     return payload, t2
 
 

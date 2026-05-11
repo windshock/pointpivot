@@ -94,3 +94,37 @@ export POINTPIVOT_SEARXNG_URL=http://localhost:8080
 ```
 
 `hybrid` 기본 동작은 SearXNG를 먼저 시도하고, 실패하거나 0건이면 DDG로 fallback한다. 최근성 판단은 검색 provider의 "최근 결과"가 아니라 원문 `datePublished`/`작성일`/캡처 시점으로 한다.
+
+## 9. 선택 ProxyGather → SearXNG proxy pool
+
+이 기능은 기본 비활성화다. ProxyGather는 public proxy 후보 공급원일 뿐이며, PointPivot이 로컬에서 다시 검증한 proxy만 SearXNG `outgoing.proxies` YAML 조각으로 export한다. Public proxy는 신뢰할 수 없으므로 저민감 Tier-1 후보 검색에만 쓰고, 로그인·쿠키·토큰·비공개 조사 내용은 보내지 않는다.
+
+```bash
+# 예시 설정 확인: config/proxy_sources.yml.example
+# 필요하면 복사해서 config/proxy_sources.yml로 수정한다.
+
+.venv/bin/python scripts/proxy_collectors/proxygather.py \
+  --output config/proxy_candidates.json \
+  --limit 200
+
+.venv/bin/python scripts/proxy_collectors/validator.py \
+  --input config/proxy_candidates.json \
+  --output config/live_proxies.yml \
+  --timeout 5 \
+  --concurrency 10
+
+.venv/bin/python scripts/proxy_collectors/export_searxng_proxies.py \
+  --input config/live_proxies.yml \
+  --output config/searxng_proxies.generated.yml
+```
+
+`config/searxng_proxies.generated.yml`은 실제 SearXNG `settings.yml`을 덮어쓰지 않는다. 생성된 `outgoing.proxies` 섹션을 사람이 검토한 뒤 SearXNG 설정에 수동 병합한다.
+
+Proxy metadata를 Tier-1 JSON에 요약만 남기려면 SearXNG를 실제로 해당 proxy pool로 구동한 상태에서 명시적으로 켠다. 전체 proxy URL은 보고서나 Tier-1 JSON에 기록하지 않는다.
+
+```bash
+export POINTPIVOT_PROXY_MODE=searxng_outgoing
+export POINTPIVOT_PROXY_INVENTORY=config/live_proxies.yml
+```
+
+생성 파일은 commit하지 않는다: `config/proxy_candidates.json`, `config/live_proxies.yml`, `config/searxng_proxies.generated.yml`, `data/proxy_validation_logs/*.json`.

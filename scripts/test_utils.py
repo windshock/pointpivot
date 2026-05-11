@@ -10,6 +10,7 @@ from __future__ import annotations
 import re
 import os
 import sys
+import tempfile
 import unittest
 from contextlib import contextmanager
 from pathlib import Path
@@ -21,6 +22,16 @@ sys.path.insert(0, str(SCRIPTS))
 from search_providers import create_search_provider  # noqa: E402
 from search_providers.base import SearchProvider, SearchProviderError, normalize_result  # noqa: E402
 from search_providers.hybrid import HybridProvider  # noqa: E402
+from proxy_collectors.base import (  # noqa: E402
+    dedupe_proxy_records,
+    normalize_proxy_record,
+    normalize_proxy_url,
+    proxy_provenance_from_env,
+    write_json,
+    write_yaml,
+)
+from proxy_collectors.export_searxng_proxies import build_searxng_proxy_config  # noqa: E402
+from proxy_collectors.validator import validate_proxy_record, build_live_inventory  # noqa: E402
 from utils import get_unverified_ips, parse_index, parse_seed_ips  # noqa: E402
 
 
@@ -66,6 +77,18 @@ class StaticProvider(SearchProvider):
                 query=query,
             )
         ][:max_results]
+
+
+class MockResponse:
+    def __init__(self, status_code: int = 200, payload=None) -> None:
+        self.status_code = status_code
+        self._payload = payload if payload is not None else {'origin': '203.0.113.10'}
+        self.headers = {'content-type': 'application/json'}
+
+    def json(self):
+        if isinstance(self._payload, Exception):
+            raise self._payload
+        return self._payload
 
 
 class ParserSmokeTests(unittest.TestCase):
@@ -137,6 +160,103 @@ class ParserSmokeTests(unittest.TestCase):
         results = provider.search('"1.2.3.4"')
         self.assertEqual(len(results), 1)
         self.assertEqual(results[0]['provider'], 'static')
+
+    def test_proxy_url_normalization_supports_no_scheme(self) -> None:
+        url, protocol = normalize_proxy_url('1.2.3.4:8080', default_protocol='http')
+
+        self.assertEqual(url, 'http://1.2.3.4:8080')
+        self.assertEqual(protocol, 'http')
+
+    def test_proxy_record_dedupe_uses_normalized_url(self) -> None:
+        collected_at = '2026-05-11T00:00:00+00:00'
+        first = normalize_proxy_record(
+            'HTTP://1.2.3.4:8080',
+            source='proxygather',
+            source_url='https://example.test/http.txt',
+            default_protocol='http',
+            collected_at=collected_at,
+        )
+        second = normalize_proxy_record(
+            '1.2.3.4:8080',
+            source='proxygather',
+            source_url='https://example.test/http.txt',
+            default_protocol='http',
+            collected_at=collected_at,
+        )
+
+        self.assertEqual(len(dedupe_proxy_records([first, second])), 1)
+
+    def test_proxy_validator_accepts_neutral_json_response(self) -> None:
+        record = normalize_proxy_record(
+            '1.2.3.4:8080',
+            source='proxygather',
+            source_url='https://example.test/http.txt',
+        )
+
+        result = validate_proxy_record(
+            record,
+            request_get=lambda *args, **kwargs: MockResponse(payload={'origin': '1.2.3.4'}),
+        )
+
+        self.assertTrue(result['validated'])
+        self.assertIsNone(result['failure_reason'])
+
+    def test_proxy_validator_rejects_bad_response(self) -> None:
+        record = normalize_proxy_record(
+            '1.2.3.4:8080',
+            source='proxygather',
+            source_url='https://example.test/http.txt',
+        )
+
+        result = validate_proxy_record(
+            record,
+            request_get=lambda *args, **kwargs: MockResponse(payload={'html': '<body>ad</body>'}),
+        )
+
+        self.assertFalse(result['validated'])
+        self.assertEqual(result['failure_reason'], 'bad_response')
+
+    def test_searxng_proxy_export_includes_only_validated_records(self) -> None:
+        records = [
+            {'url': 'http://1.2.3.4:8080', 'validated': True},
+            {'url': 'http://5.6.7.8:3128', 'validated': False},
+        ]
+
+        payload = build_searxng_proxy_config(records)
+
+        self.assertEqual(
+            payload['outgoing']['proxies']['all://'],
+            ['http://1.2.3.4:8080'],
+        )
+
+    def test_proxy_provenance_is_disabled_by_default(self) -> None:
+        with without_env('POINTPIVOT_PROXY_MODE', 'POINTPIVOT_PROXY_INVENTORY'):
+            self.assertEqual(proxy_provenance_from_env(), {})
+
+    def test_proxy_provenance_summary_omits_proxy_urls(self) -> None:
+        inventory = build_live_inventory([
+            {
+                'url': 'http://1.2.3.4:8080',
+                'protocol': 'http',
+                'source': 'proxygather',
+                'validated': True,
+                'validated_at': '2026-05-11T00:00:00+00:00',
+                'failure_reason': None,
+            }
+        ], target_url='https://httpbin.org/ip')
+
+        with tempfile.TemporaryDirectory() as tmp:
+            inventory_path = Path(tmp) / 'live_proxies.yml'
+            write_yaml(inventory_path, inventory)
+            with without_env('POINTPIVOT_PROXY_MODE', 'POINTPIVOT_PROXY_INVENTORY'):
+                os.environ['POINTPIVOT_PROXY_MODE'] = 'searxng_outgoing'
+                os.environ['POINTPIVOT_PROXY_INVENTORY'] = str(inventory_path)
+                provenance = proxy_provenance_from_env()
+
+        self.assertEqual(provenance['proxy_mode'], 'searxng_outgoing')
+        self.assertEqual(provenance['proxy_source'], 'proxygather')
+        self.assertEqual(provenance['proxy_count'], 1)
+        self.assertNotIn('1.2.3.4', str(provenance))
 
 
 if __name__ == '__main__':

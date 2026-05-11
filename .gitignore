@@ -19,3 +19,9 @@ data/tier1_logs/*.json
 
 # Recent-window search raw exports (Markdown reports are tracked)
 reports/recent_window_*.json
+
+# Optional ProxyGather/SearXNG proxy pipeline generated artifacts
+config/proxy_candidates.json
+config/live_proxies.yml
+config/searxng_proxies.generated.yml
+data/proxy_validation_logs/*.json

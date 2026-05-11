@@ -1,0 +1,22 @@
+# Optional ProxyGather source configuration for PointPivot.
+# Copy to config/proxy_sources.yml before editing. This feature is disabled by
+# default and is only for generating a local SearXNG outgoing.proxies fragment.
+
+timeout: 15
+sources:
+  - name: proxygather_all
+    source: proxygather
+    url: https://raw.githubusercontent.com/Skillter/ProxyGather/refs/heads/master/proxies/working-proxies-all.txt
+    protocol:
+  - name: proxygather_http
+    source: proxygather
+    url: https://raw.githubusercontent.com/Skillter/ProxyGather/refs/heads/master/proxies/working-proxies-http.txt
+    protocol: http
+  - name: proxygather_socks4
+    source: proxygather
+    url: https://raw.githubusercontent.com/Skillter/ProxyGather/refs/heads/master/proxies/working-proxies-socks4.txt
+    protocol: socks4
+  - name: proxygather_socks5
+    source: proxygather
+    url: https://raw.githubusercontent.com/Skillter/ProxyGather/refs/heads/master/proxies/working-proxies-socks5.txt
+    protocol: socks5
