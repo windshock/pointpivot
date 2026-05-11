@@ -7,9 +7,9 @@
 
 ## 마지막 업데이트
 
-- **날짜:** 2026-04-13
-- **작업자:** Cursor Agent (Browser MCP + nmap + 로컬 스크립트)
-- **도구 환경:** cursor-ide-browser MCP + nmap 7.95 + Python 3.11 + 파일 편집
+- **날짜:** 2026-05-11
+- **작업자:** Copilot CLI
+- **도구 환경:** `.venv/bin/python`, DDG/ddgs, 실제 Docker SearXNG 테스트, curl/curl `-k`, GitHub push
 
 ---
 
@@ -104,6 +104,14 @@
 - **핵심 IP/IOC:** `121.170.203.142`, `puy24.com`, `hto78.com`, `kbb12.com`.
 - **최근 확인:** 2026-05-11 사용자 제공 `moonyetimes.com` board1 원문 3건(`idx=15434`, `15554`, `16554`)에서 2026-05-05~2026-05-06 게시글의 작성자 IP `121.170.203.142`와 성인약국/pharma 스팸 본문 직접 확인.
 - **주의:** 같은 `/24`의 `121.170.203.144`는 `@rnfma9` USIM/loan 후보이나, 공유 IOC가 없어 현재는 별도 후보로 둔다.
+- **확장 조건:** `puy24.com`/`hto78.com`/`kbb12.com` 피벗에서 추가 작성자 IP 또는 피해 사이트가 확인되면 `Cluster#4` 승격 후보. 현재는 IP 1개 + 피해 사이트 1개라 번호 부여 보류.
+
+### 검색 provider / 브라우저 handoff
+- **SearXNG 구현 상태:** `scripts/search_providers/`에 `ddg`, `searxng`, `hybrid` provider가 있고 `POINTPIVOT_SEARCH_PROVIDER=ddg|searxng|hybrid`, `POINTPIVOT_SEARXNG_URL=http://localhost:8080`로 전환 가능.
+- **실제 SearXNG 테스트:** 2026-05-11 Docker로 `searxng/searxng:latest`를 실제 실행했다. 기본 컨테이너는 `formats: [html]`만 켜져 있어 PointPivot JSON API 요청이 403이었다. `/etc/searxng/settings.yml`에 `json` format을 추가한 뒤 `format=json` API와 `POINTPIVOT_SEARCH_PROVIDER=searxng` dry-run이 동작했다.
+- **SearXNG 한계:** 실제 로컬 SearXNG에서도 `site:moonyetimes.com "121.170.203.142"`, `"121.170.203.142" "puy24.com"`는 결과 0건이었다. 엔진별 테스트에서 DDG/Startpage는 CAPTCHA·suspend, Google/Bing은 쿼리 성공하나 `moonyetimes` 결과 0건이었다.
+- **중요 결론:** `moonyetimes.com`은 사용자의 브라우저 Google SERP/직접 URL 제보로만 확인됐다. DDG/SearXNG 자동 provider만으로는 누락될 수 있으므로 다음 확장 조사에는 **브라우저가 있는 AI agent**가 필요하다.
+- **운영 권장:** 브라우저 agent는 Google `qdr:y` recent 필터와 exact query를 사용해 `"{IP}"`, `"{domain}" "ip"`, `site:{victim} "{IP}"`, `"{domain}" "{IP}"` 조합을 수동 확인하고, 검색 스니펫은 Tier-1 후보로만 취급한다. 작성자 IP/본문 IOC 승격은 원문 페이지 직접 확인 후에만 한다.
 
 ---
 
@@ -111,29 +119,36 @@
 
 ### 🔴 최우선 (즉시 실행)
 
-1. **POS 제휴사 IP (185개) 검증 파이프라인(investigate_ip.py) 실행** ✅ *2026-05-11 재검증*
+1. **브라우저 기반 PARTIAL/도메인 피벗 재검증** ⏳ *다음 세션 최우선*
+    - 목적: DDG/SearXNG가 놓친 Google 브라우저 SERP 후보를 수집. `moonyetimes.com` 사례처럼 삭제·TLS·색인 차이로 자동 provider가 누락할 수 있음.
+    - 우선 쿼리: `"121.170.203.142"`, `"121.170.203.142" "ip"`, `"puy24.com" "ip"`, `"hto78.com" "ip"`, `"kbb12.com" "ip"`, `site:moonyetimes.com "121.170.203.142"`, `"puy24.com" "121.170.203.142"`.
+    - 확장 쿼리: `@rnfma9 "ip"`, `rnfma9rnfma9.isweb.co.kr "ip"`, `@sk11400 "ip"`, `sk11400.isweb.co.kr "ip"`, `@holysim "ip"`, `holysim.isweb.co.kr "ip"`.
+    - 검증 기준: Google 스니펫만으로 DONE/HIGH 금지. 원문을 직접 열어 작성자 IP 필드 또는 본문 IOC 완전 일치를 확인해야 함. TLS hostname mismatch가 있는 경우 `curl -k`/브라우저 원문 확인을 별도 기록.
+    - 승격 기준: pharma 후보는 `121.170.203.142` 외 추가 IP 또는 추가 피해 사이트가 직접 확인되면 `Cluster#4` 승격 검토. USIM/loan 후보는 `@rnfma9`/`@sk11400`/`@holysim`의 추가 작성자 IP가 확인되면 별도 후보 클러스터 확장.
+
+2. **POS 제휴사 IP (185개) 검증 파이프라인(investigate_ip.py) 실행** ✅ *2026-05-11 재검증*
     - 목적: 정상 기업 공용 인프라 IP라 할지라도, 실제로 게시판 스팸(`spammed_sites.md`)이나 다른 공격 흔적에 노출된 적이 있는지 정식으로 검증.
     - 방침: 배치 파이프라인(`--batch`)을 돌리되, 이전 에이전트의 실수(Hallucination)를 교훈 삼아 스니펫에 단순히 잡히는 것과 '직접 게시(발신지)'를 엄격히 분리하여 판정.
     - 결과: POS 185개 티어1 로그 기준 `tier2_default.eligible=0`; 자동 생성된 `investigations/unclassified/*.md` 185개는 전부 `PARTIAL/LOW`, 직접 게시 0건, IOC 0건, lifecycle 필드 없음.
     - 수동 재검증: 키워드 힌트가 있던 29개를 우선 확인. `dcinside`, `ezibaby`, `backcountry`, `totocommunity`, `TikTok`, `brownfeed`, `Behance` 대표 원문에서 exact IP 매칭 없음. 스팸 페이지 자체는 존재하나 POS IP의 작성자/본문 IOC가 아니므로 오탐으로 판정.
     - 조치: 신뢰 가능한 조사 보고서가 아니므로 untracked 자동 초안은 커밋하지 않고 폐기. POS seed는 향후 명시 재검증을 위해 `UNVERIFIED` 상태를 유지하되, 위협 지표로 분류하지 않는다.
 
-2. **abab1768.isweb.co.kr / brrsim77.isweb.co.kr 직접 조회** ✅ *2026-04-09 확인*
+3. **abab1768.isweb.co.kr / brrsim77.isweb.co.kr 직접 조회** ✅ *2026-04-09 확인*
    - 결과: **두 사이트 모두 현재 다운** (invalid response). 접근 불가.
    - `abab1768abab1768.isweb.co.kr` 도 동일 다운 상태.
 
-2. **matcl.com 스레드 본문 확인** ✅ *2026-04-09 브라우저 직접 확인 완료*
+4. **matcl.com 스레드 본문 확인** ✅ *2026-04-09 브라우저 직접 확인 완료*
    - 결과: `@abab1768` 자유·팁 게시판 다수 게시 확인. `http://www.matcl.com/freeboard/11429543` (2026-04-08)
    - **matcl.com 작성자 IP 미노출** → IP 피벗 불가. 홍보 URL `abab1768abab1768.isweb.co.kr` 현재 다운.
    - `@the_usim` 자유게시판 스팸 게시 확인. IP 노출 없음.
    - ioc_registry.md 반영 완료.
 
-3. **121.159.134.27 신규 IOC 검증** ✅ *2026-04-09 브라우저 확인 완료*
+5. **121.159.134.27 신규 IOC 검증** ✅ *2026-04-09 브라우저 확인 완료*
    - `@0450`: t.me → telegram.org 리다이렉트 → **FALSE_POSITIVE**
    - `@df8d3400wef50681bp68ad6cf7m44c53`: **실존하는 Telegram 개인 계정** (DM형, 봇 가능성)
    - `investigations/cluster1/121.159.134.27.md` 업데이트 완료
 
-4. **221.143.197.13 직접 게시 증거** ✅ *2026-04-09 브라우저 전수 완료*
+6. **221.143.197.13 직접 게시 증거** ✅ *2026-04-09 브라우저 전수 완료*
    - **board(공지사항) 1~79p 전수 + board1(보도자료) → 0건 확정**
    - board는 2026-01-10~현재, 79페이지 전부 pp/aa/카지노 스패머. kimyoojin18 없음.
    - board1은 2018년 관리자 글 3건(보도자료). 해당 없음.
