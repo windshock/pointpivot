@@ -100,7 +100,7 @@
 
 ## 피벗으로 추가 확보한 IP
 
-> 아래 IP는 seed 진행률에 포함하지 않음. izanaholdings 직접 본문에서 확인된 추가 residential IP만 기록.
+> 아래 IP는 seed 진행률에 포함하지 않음. 직접 본문에서 확인된 추가 작성자 IP만 기록.
 
 
 | IP             | 상태      | 클러스터         | 인프라                 | last_seen  | last_verified | 조사 파일                             |
@@ -111,6 +111,8 @@
 | 125.132.9.136  | DONE    | Cluster#1    | KR_RESIDENTIAL      | 2026-04-07 | 2026-04-07    | [보고서](cluster1/125.132.9.136.md)  |
 | 14.51.2.179    | DONE    | Cluster#1    | KR_RESIDENTIAL      | 2026-04-07 | 2026-04-07    | [보고서](cluster1/14.51.2.179.md)    |
 | 121.159.134.27 | PARTIAL | Cluster#1 추정 | KR_RESIDENTIAL (추정) | -          | -             | [보고서](cluster1/121.159.134.27.md) |
+| 121.170.203.144 | PARTIAL | 신규 후보(USIM/loan) | KR_RESIDENTIAL 추정 | 2026-05-11 | 2026-05-11 | [보고서](unclassified/121.170.203.144.md) |
+| 168.126.234.232 | PARTIAL | 신규 후보(USIM/loan) | KR_RESIDENTIAL 추정 | 2026-03-26 | 2026-05-11 | [보고서](unclassified/168.126.234.232.md) |
 
 
 ## @GO174 / @Muo52S 역피벗으로 추가 확보한 IP (Cluster#3)
@@ -146,4 +148,3 @@
 | Cluster#2 | `cluster2/`     | @YY77882 불법 의약품 자동화 인프라 (Vultr VPS)   |
 | Cluster#3 | `cluster3/`     | @GO174 / @Muo52S 금융사기·도박·위조 스팸 (KT 118.235.x.x) |
 | 미분류       | `unclassified/` | 기프티콘 KR_RESIDENTIAL 등 클러스터 미배정 IP     |
-

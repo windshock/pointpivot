@@ -19,6 +19,8 @@
 | 청소년 공연예술축제 | chunggong.or.kr | 공공기관 | - | @brrsim_77 / @abab1768 피벗 | @brrsim_77, @abab1768 | 2026-05-06 상세 페이지 메타데이터로 @abab1768 최근 게시 확인. 작성자 IP 미노출 | ddg_site |
 | 테헤란밸리 오케스트라 | tvo.kr | 커뮤니티/단체 | - | 행위 키워드 신규 발굴 | @holysim, @rnfma9, @sk11400 | 2026-05-08~2026-05-11 상세 페이지 메타데이터로 최근 게시 확인. 작성자 IP 미노출. 신규 후보(USIM/loan) | ddg_site |
 | 대구경북서예가협회 | dgcaa.or.kr | 협회 게시판 | - | 행위 키워드 신규 발굴 | @holysim | 2026-05-07 상세 페이지 메타데이터로 최근 게시 확인. 작성자 IP 미노출. 신규 후보(USIM/loan) | ddg_site |
+| 매생이총각네 | ebbysory.co.kr | Cafe24 쇼핑몰 | 121.170.203.144 | @rnfma9 피벗 | 구름모바일, 선불유심내구제, 급전 | 모바일 상세 페이지에서 `ip:121.170.203.144` 작성자 IP 직접 노출. 신규 후보(USIM/loan) | ddg_site |
+| 마리벨 | maribel.co.kr | Cafe24 쇼핑몰 | 168.126.234.232 | @sk11400 피벗 | 산타모바일, 선불유심내구제, 급전 | 모바일 상세 페이지에서 `ip:168.126.234.232` 작성자 IP 직접 노출. 2026-03-26 source | ddg_site |
 | DBpia 커뮤니티 | community.dbpia.co.kr | 학술 | - | @brrsim_77 피벗 | @brrsim_77 | | ddg_site |
 | 선도산림경영단지 | sundofm.or.kr | 공공기관 | - | @abab1768 피벗 | @abab1768 | | ddg_site |
 | 루마니아 한인회 | homepy.korean.net | 재외동포 | - | @brrsim_77 피벗 | @brrsim_77 | | ddg_site |

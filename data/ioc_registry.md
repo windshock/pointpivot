@@ -33,8 +33,8 @@
 | @GO174 | - | 118.235.25.44 | 2026-04-13 | DONE | Cluster#3 | 먹튀/도박/통장협박/계좌매입 대규모 스팸. outoftrunk.com 등 다수 카페24 사이트. @Muo52S와 동일 인프라 공유. |
 | @Muo52S | - | 118.235.2.186, 118.235.12.181 | 2026-04-29 | DONE | Cluster#3 | 스포츠픽, 파워볼유출, 밸런스작업, 문서위조 광고. @GO174와 동일 인프라 공유. |
 | @holysim | holysim | - | 2026-05-11 | PARTIAL | 신규 후보(USIM/loan) | 행위 키워드 신규 발굴. `tvo.kr`와 `dgcaa.or.kr` 최근 게시글에서 선불유심내구제/급전 문구와 함께 직접 확인. 작성자 IP 미노출. |
-| @rnfma9 | 구름모바일 | - | 2026-05-11 | PARTIAL | 신규 후보(USIM/loan) | 행위 키워드 신규 발굴. `tvo.kr` 2026-05-08 상세글에서 선불유심내구제/급전 문구와 `rnfma9rnfma9.isweb.co.kr` 확인. 작성자 IP 미노출. |
-| @sk11400 | 산타모바일 | - | 2026-05-11 | PARTIAL | 신규 후보(USIM/loan) | 행위 키워드 신규 발굴. `tvo.kr` 2026-05-11 상세글에서 선불유심매입/내구제 문구와 함께 확인. 작성자 IP 미노출. |
+| @rnfma9 | 구름모바일 | 121.170.203.144 | 2026-05-11 | PARTIAL | 신규 후보(USIM/loan) | 행위 키워드 신규 발굴. `tvo.kr` 2026-05-08 상세글에서 선불유심내구제/급전 문구와 `rnfma9rnfma9.isweb.co.kr` 확인. `m.ebbysory.co.kr`에서 작성자 IP 직접 노출. |
+| @sk11400 | 산타모바일 | 168.126.234.232 | 2026-05-11 | PARTIAL | 신규 후보(USIM/loan) | 행위 키워드 신규 발굴. `tvo.kr` 2026-05-11 상세글 및 `m.maribel.co.kr` 작성자 IP 노출 원문에서 확인. |
 
 ---
 
@@ -48,6 +48,7 @@
 | labubu.isweb.co.kr | 홍보 사이트 | @the_usim | 2026-04-09 | UNVERIFIED | Cluster#1 | 라부부통신. matcl.com 스팸 스레드 스니펫에서 교차 언급 |
 | holysim.isweb.co.kr | 홍보 사이트 | @holysim | 2026-05-11 | PARTIAL | 신규 후보(USIM/loan) | `tvo.kr` 및 `dgcaa.or.kr` 최근 게시글에서 직접 URL로 확인. 직접 접근은 403 Forbidden. |
 | rnfma9rnfma9.isweb.co.kr | 홍보 사이트 | @rnfma9 | 2026-05-11 | PARTIAL | 신규 후보(USIM/loan) | `tvo.kr` 2026-05-08 상세글에서 직접 URL로 확인. 직접 접근은 403 Forbidden. |
+| sk11400.isweb.co.kr | 홍보 사이트 | @sk11400 | 2026-05-11 | PARTIAL | 신규 후보(USIM/loan) | `m.maribel.co.kr` 2026-03-26 작성자 IP 노출 원문에서 직접 URL로 확인. |
 
 > 💡 isweb.co.kr: 무료 웹호스팅 — 스팸 사이트에 자주 악용됨
 
@@ -85,6 +86,8 @@
 | 125.132.9.140 | izanaholdings.com 작성자 IP (`kimyoojin18`) | 2026-04-07 | DONE | Cluster#1 | idx 249374에서 `@brrsim_77`, `brrsim77.isweb.co.kr` 동시 확인 |
 | 125.132.9.136 | izanaholdings.com 작성자 IP (`kimyoojin18`) | 2026-04-07 | DONE | Cluster#1 | idx 248794에서 `@brrsim_77`, `brrsim77.isweb.co.kr` 동시 확인 |
 | 14.51.2.179 | izanaholdings.com 작성자 IP (`kimyoojin18`) | 2026-04-07 | DONE | Cluster#1 | idx 249124에서 `@brrsim_77`, `brrsim77.isweb.co.kr` 동시 확인 |
+| 121.170.203.144 | Cafe24 모바일 게시판 작성자 IP (`@rnfma9`) | 2026-05-11 | PARTIAL | 신규 후보(USIM/loan) | `m.ebbysory.co.kr` 원문에서 `ip:121.170.203.144` 확인. 기존 seed `121.170.203.142`와 같은 /24 |
+| 168.126.234.232 | Cafe24 모바일 게시판 작성자 IP (`@sk11400`) | 2026-03-26 | PARTIAL | 신규 후보(USIM/loan) | `m.maribel.co.kr` 원문에서 `ip:168.126.234.232` 확인 |
 
 ---
 
