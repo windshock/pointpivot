@@ -96,6 +96,7 @@
 - **핵심 IOC:** @holysim, @rnfma9, @sk11400, `holysim.isweb.co.kr`, `rnfma9rnfma9.isweb.co.kr`
 - **최근 확인:** 2026-05-11 행위 키워드 신규 발굴에서 `tvo.kr`(2026-05-08~2026-05-11), `dgcaa.or.kr`(2026-05-07) 상세 페이지 메타데이터와 원문 핸들/키워드 직접 확인.
 - **작성자 IP:** 사용자 제공 Cafe24 모바일 게시판 원문에서 `@rnfma9` 작성자 IP `121.170.203.144`, `@sk11400` 작성자 IP `168.126.234.232` 확인. `121.170.203.144`는 기존 seed `121.170.203.142`와 같은 /24라 추가 확인 가치가 있음. DCinside 결과의 `211.201`은 부분 IP, `104.28.164.10`은 CDN/페이지 자산 값으로 보여 등록하지 않음.
+- **PARTIAL 재검증:** 2026-05-11 `PARTIAL` 75개 exact-IP 검색 triage에서 `121.170.203.142`는 CleanTalk recent spam reputation(`last activity=2026-05-08`)만 확인됐고, `@rnfma9`/USIM 직접 원문은 미확보. `218.236.231.231`은 삭제된 `dongponews` 스니펫에 `@brrsim_77`가 보이나 원문이 없어 `search_snippet_only`로 유지. 보고서: `reports/partial_revalidation_2026-05-11.md`
 - **보고서:** `reports/new_leads_2026-05-11.md`
 
 ---

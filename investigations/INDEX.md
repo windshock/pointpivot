@@ -18,10 +18,10 @@
 | 221.143.197.135 | DONE    | Cluster#1    | KR_RESIDENTIAL                    | 2026-03-14 | 2026-04-07                    | [보고서](cluster1/221.143.197.135.md)     |
 | 221.143.197.136 | DONE    | Cluster#1    | KR_RESIDENTIAL                    | 2026-03-14 | 2026-04-07                    | [보고서](cluster1/221.143.197.136.md)     |
 | 221.143.197.13  | PARTIAL | Cluster#1 추정 | KR_RESIDENTIAL (SK Broadband, 대구) | -          | 2026-04-09 (board 35p+36–59p) | [보고서](cluster1/221.143.197.13.md)      |
-| 218.236.231.231 | PARTIAL | -            | -                                 | -          | -                             | [보고서](unclassified/218.236.231.231.md) |
+| 218.236.231.231 | PARTIAL | -            | -                                 | 2026-03-16 (snippet only) | 2026-05-11                    | [보고서](unclassified/218.236.231.231.md) |
 | 218.236.231.232 | PARTIAL | -            | -                                 | -          | -                             | [보고서](unclassified/218.236.231.232.md) |
 | 218.236.231.235 | PARTIAL | -            | -                                 | -          | -                             | [보고서](unclassified/218.236.231.235.md) |
-| 121.170.203.142 | PARTIAL | -            | -                                 | -          | -                             | [보고서](unclassified/121.170.203.142.md) |
+| 121.170.203.142 | PARTIAL | -            | KR_RESIDENTIAL (KT)               | 2026-05-08 (reputation) | 2026-05-11                    | [보고서](unclassified/121.170.203.142.md) |
 | 125.141.26.12   | PARTIAL | -            | -                                 | -          | -                             | [보고서](unclassified/125.141.26.12.md)   |
 
 
