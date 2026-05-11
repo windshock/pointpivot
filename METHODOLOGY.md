@@ -164,6 +164,7 @@ site:izanaholdings.com "[닉네임]"
 
 ### 5.2 오탐(False Positive) 방지 및 기록
 - **제휴사 IP 보호:** 제휴사로부터 제공받은 공식 IP 리스트는 최우선적으로 '정상 인프라'로 간주하며, 명백하고 구체적인 침해 지표(예: 해당 IP가 발신지인 최근의 C&C 통신 로그)가 없는 한 위협 그룹으로 분류하지 않는다.
+- **통신사 대역 보호:** [data/carrier_ip_ranges.md](data/carrier_ip_ranges.md)는 SKT/KT/LG U+ 대역 식별용 참고자료다. 대역 매칭은 `KR_MOBILE`/`KR_RESIDENTIAL` 추정 근거일 뿐이며, 악성 판정·클러스터 귀속·차단 근거로 단독 사용하지 않는다.
 - **실수 사례의 공유:** 조사 과정에서 발생한 판단 오류나 논리적 비약은 `STATUS.md`에 기록하여 차후 에이전트가 동일한 오탐을 반복하지 않도록 인수인계한다.
 
 ## 6. IP 인프라 유형 분류
@@ -171,7 +172,7 @@ site:izanaholdings.com "[닉네임]"
 | 유형 | 특징 | 대표 대역 | 의미 |
 |---|---|---|---|
 | **KR_RESIDENTIAL** | 국내 ISP 고정회선 | 221.143.x.x (SK Broadband) | 실제 사람 직접 사용 또는 감염 단말 |
-| **KR_MOBILE** | 국내 모바일 | 39.x.x.x, 223.x.x.x 등 | 모바일 기기에서 직접 접근 |
+| **KR_MOBILE** | 국내 모바일 | 39.x.x.x, 223.x.x.x 등 ([통신사 대역 참고표](data/carrier_ip_ranges.md)) | 모바일 기기에서 직접 접근 |
 | **VPS_GLOBAL** | 해외 VPS/클라우드 | 141.164.x.x, 158.247.x.x (Vultr) | 자동화 공격 인프라 가능성 높음 |
 | **PROXY** | 프록시/VPN | 다양 | 실제 위치 은닉 |
 
@@ -298,7 +299,7 @@ Python crawler를 먼저 만드는 것보다, 브라우저로 몇 건의 수동 
 | 값 | 대표 대역 | 의미 |
 |---|---|---|
 | `KR_RESIDENTIAL` | 221.143.x.x (SK Broadband 등) | 국내 고정회선 |
-| `KR_MOBILE` | 39.x.x.x, 223.x.x.x 등 | 국내 모바일 |
+| `KR_MOBILE` | 39.x.x.x, 223.x.x.x 등 ([data/carrier_ip_ranges.md](data/carrier_ip_ranges.md)) | 국내 모바일 |
 | `VPS_GLOBAL` | 141.164.x.x, 158.247.x.x (Vultr 등) | 해외 VPS/클라우드 |
 | `PROXY` | 다양 | 프록시/VPN |
 
