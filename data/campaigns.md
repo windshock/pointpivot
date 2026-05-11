@@ -190,6 +190,7 @@ outoftrunk.com, gs3m.co.kr, tojonghongsam.com, petroute.co.kr, baumshouse.com �
 - **조직적 분업:** 금융사기(@GO174)와 사행성/위조(@Muo52S) 활동이 동일 인프라를 공유하며 전문화된 패턴을 보임.
 - **활동 지속성:** 2025년 11월 대규모 캠페인 이후 2026년 4월 말까지도 지속적인 스팸 활동 관찰됨.
 - **nmap 결과:** 프록시 서버 포트 미발견. KT CGNAT 환경의 일반 모바일/회선 IP 사용 추정.
+- **carrier 대역 주의:** 통신사 대역 참고표는 [`data/carrier_ip_ranges.md`](carrier_ip_ranges.md)에 둔다. `118.235.*`, `39.7.*` 같은 KT carrier/mobile/CGNAT 대역은 일반 사용자가 동일 IP 또는 인접 대역을 공유할 수 있으므로, 동일 IP·동일 /24만으로 Cluster#3에 귀속하거나 광역 차단하지 않는다. 귀속은 `@GO174`, `@Muo52S`, 게시글 본문, 반복 문구, 피해 사이트 URL 등 직접 행위 증거와 함께 판단한다.
 
 ### 미확인 사항
 
