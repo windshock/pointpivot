@@ -5,3 +5,9 @@ PySocks>=1.7.1
 
 # Optional: enables the curl_cffi HTTP fallback when curl is unavailable or blocked.
 # curl_cffi>=0.11.0
+
+# Optional: enables headless-browser fetch (scripts/scrapers/browser_fetch.py).
+# Use when an egress proxy MITM-rewrites HTTPS (Chromium ignores system CA
+# bundle) or when targets refuse plain curl/ddgs. After install run:
+#   .venv/bin/playwright install chromium-headless-shell
+# playwright>=1.56.0
