@@ -7,9 +7,9 @@
 
 ## 마지막 업데이트
 
-- **날짜:** 2026-05-11
-- **작업자:** Copilot CLI
-- **도구 환경:** `.venv/bin/python`, DDG/ddgs, 실제 Docker SearXNG 테스트, curl/curl `-k`, GitHub push
+- **날짜:** 2026-05-27
+- **작업자:** Claude Code (web 세션)
+- **도구 환경:** `.venv/bin/python`, DDG/ddgs, Playwright(Chromium headless-shell) via `scripts/scrapers/browser_fetch.py`, GitHub push
 
 ---
 
@@ -125,6 +125,12 @@
     - 확장 쿼리: `@rnfma9 "ip"`, `rnfma9rnfma9.isweb.co.kr "ip"`, `@sk11400 "ip"`, `sk11400.isweb.co.kr "ip"`, `@holysim "ip"`, `holysim.isweb.co.kr "ip"`.
     - 검증 기준: Google 스니펫만으로 DONE/HIGH 금지. 원문을 직접 열어 작성자 IP 필드 또는 본문 IOC 완전 일치를 확인해야 함. TLS hostname mismatch가 있는 경우 `curl -k`/브라우저 원문 확인을 별도 기록.
     - 승격 기준: pharma 후보는 `121.170.203.142` 외 추가 IP 또는 추가 피해 사이트가 직접 확인되면 `Cluster#4` 승격 검토. USIM/loan 후보는 `@rnfma9`/`@sk11400`/`@holysim`의 추가 작성자 IP가 확인되면 별도 후보 클러스터 확장.
+    - **환경 제약 (2026-05-27 Claude Code web 세션에서 실측):**
+        - **클라우드 세션에서는 수행 불가.** Playwright `scripts/scrapers/browser_fetch.py` (`ignore_https_errors=True` 적용)는 정상 동작하지만, 세션 egress IP가 외부 인프라에서 봇/프록시로 취급돼 다음과 같이 막힌다.
+        - **Google**: 우선/확장 13개 쿼리 모두 `429 Too Many Requests`. 첫 요청부터 throttle.
+        - **moonyetimes.com 직접 fetch**: `idxno=15434/15554/16554` 모두 `503` — anti-bot 아니라 egress proxy의 **upstream TLS handshake 실패** (`TLS_error:|268435581`). 브라우저 flag로 해결 불가.
+        - **Bing fallback**: 11개 쿼리 모두 200 OK이지만 `site:moonyetimes.com "121.170.203.142"`/`"puy24.com" "121.170.203.142"`는 결과 0건 — Bing 인덱스가 해당 KR 게시판을 커버하지 않음.
+        - **요구 환경**: 로컬/주거지 IP에서 Playwright 또는 사람이 직접 운전하는 브라우저. Pipeline 자동 부분(`run_investigate_pipeline.py`)은 클라우드에서 OK, **브라우저 SERP 단계만 로컬 필수**. 다음 세션이 클라우드면 시도하지 말고 이 항목을 그대로 다음으로 넘긴다.
 
 2. **POS 제휴사 IP (185개) 검증 파이프라인(investigate_ip.py) 실행** ✅ *2026-05-11 재검증*
     - 목적: 정상 기업 공용 인프라 IP라 할지라도, 실제로 게시판 스팸(`spammed_sites.md`)이나 다른 공격 흔적에 노출된 적이 있는지 정식으로 검증.
