@@ -77,6 +77,7 @@ POS 제휴사 IP는 오탐 검증용 데이터이며 기본 배치에서 제외�
 .venv/bin/python scripts/recent_window_check.py --today 2026-05-11
 .venv/bin/python scripts/investigate_ioc.py "@brrsim_77"
 .venv/bin/python scripts/investigate_ip.py --batch --service svc_a --limit 5
+.venv/bin/python -m scripts.scrapers.browser_fetch https://example.com/ > /tmp/page.html
 ```
 
 ## 8. 선택 검색 provider (SearXNG)
@@ -94,6 +95,31 @@ export POINTPIVOT_SEARXNG_URL=http://localhost:8080
 ```
 
 `hybrid` 기본 동작은 SearXNG를 먼저 시도하고, 실패하거나 0건이면 DDG로 fallback한다. 최근성 판단은 검색 provider의 "최근 결과"가 아니라 원문 `datePublished`/`작성일`/캡처 시점으로 한다.
+
+## 8a. 선택 헤드리스 브라우저 fetch
+
+기본 fetch는 `curl` (+ 선택 `curl_cffi`)이다. 그러나 일부 환경에서는 다음 두 가지 이유로 원문이 자동으로 안 잡힌다.
+
+- **MITM egress proxy**: 컨테이너/클라우드 세션의 egress gateway가 HTTPS를 가로채 자체 CA로 다시 서명하는 경우, Chromium은 시스템 CA 번들(`/etc/ssl/certs/ca-certificates.crt`)을 무시하고 `ERR_CERT_AUTHORITY_INVALID`를 낸다. `curl`/`requests`/Node는 `NODE_EXTRA_CA_CERTS`·`SSL_CERT_FILE`·`REQUESTS_CA_BUNDLE`로 정상 동작하지만 Playwright는 별도 우회가 필요하다.
+- **JS-rendering / anti-bot**: 일부 게시판은 JS 렌더 또는 브라우저 fingerprint를 요구한다.
+
+선택 helper: `scripts/scrapers/browser_fetch.py` (Playwright `sync_api`). MITM CA 회피를 위해 `ignore_https_errors=True`를 고정으로 사용한다. 원문 페이지 직접 확인용이며, 스니펫 기반 자동 DONE/HIGH 판정에는 쓰지 않는다.
+
+```bash
+.venv/bin/pip install 'playwright>=1.56.0'
+.venv/bin/playwright install chromium-headless-shell
+
+# 사전 설치된 브라우저 캐시가 다른 경로에 있으면(예: 컨테이너의 /opt/pw-browsers)
+export PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers
+
+# 단일 URL 원문 확인
+.venv/bin/python -m scripts.scrapers.browser_fetch https://www.moonyetimes.com/ > /tmp/page.html
+
+# 도달성만 체크 (status code로 종료코드 0/1)
+.venv/bin/python -m scripts.scrapers.browser_fetch --status-only https://www.example.com/
+```
+
+이 helper는 자동 파이프라인의 일부가 아니다. STATUS.md "브라우저 기반 PARTIAL/도메인 피벗 재검증"처럼 사람이 쿼리를 골라 원문을 수동 확인할 때만 쓴다. 검색 스니펫과 동일하게 `search_snippet_only` 증거로 취급하고, 작성자 IP/본문 IOC 승격은 원문에서 직접 확인된 경우에만 한다.
 
 ## 9. 선택 ProxyGather → SearXNG proxy pool
 
